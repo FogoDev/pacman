@@ -62,9 +62,15 @@ void Dot_object_move(void *self, Tile_object *tiles[])
     dot->shiftColliders(dot);
     
     // Se o ponto for longe de mais pra direita ou pra esquerda
-    if((dot->mPosX - dot->mCollider.r < 0) || (dot->mPosX + dot->mCollider.r > SCREEN_WIDTH) || touchesWall(dot->mCollider, tiles, dot->mGhost)){
+    if(touchesWall(dot->mCollider, tiles, dot->mGhost)){
         // Move de volta
         dot->mPosX -= dot->mVelX;
+        dot->shiftColliders(dot);
+    } else if((dot->mPosX - dot->mCollider.r < 0)){
+        dot->mPosX = SCREEN_WIDTH - dot->mCollider.r;
+        dot->shiftColliders(dot);
+    } else if((dot->mPosX + dot->mCollider.r > SCREEN_WIDTH)){
+        dot->mPosX = 0 + dot->mCollider.r;
         dot->shiftColliders(dot);
     }
     
