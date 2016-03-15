@@ -69,12 +69,17 @@ bool init()
                 // }
                 
                 Texture_object_new(&gTileTexture);
-                Texture_object_new(&gDotTexture);
+
+                Texture_object_new(&gPacmanTexture);
+
+                Texture_object_new(&gScoreTextTexture);
+                Texture_object_new(&gPointsTextTexture);
+                Texture_object_new(&gLivesTextTexture);
                 
                 Time_object_new(&fpsTimer);
                 Time_object_new(&capTimer);
                 
-                Dot_object_new(&gDot, 32, 368, true);
+                Dot_object_new(&gPacman, 32, 368, false);
                 // Dot_object_new(&otherDot, SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4);
                 
                 

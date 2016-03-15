@@ -33,9 +33,11 @@ void closeProgram(Tile_object *tiles[])
     // gDownTexture.textureFree(&gDownTexture);
     // gLeftTexture.textureFree(&gLeftTexture);
     // gRightTexture.textureFree(&gRightTexture);
-    gDotTexture.textureFree(&gDotTexture);
+    gPacmanTexture.textureFree(&gPacmanTexture);
     gTileTexture.textureFree(&gTileTexture);
-    // gPromptTextTexture.textureFree(&gPromptTextTexture);
+    gScoreTextTexture.textureFree(&gScoreTextTexture);
+    gLivesTextTexture.textureFree(&gLivesTextTexture);
+    gPointsTextTexture.textureFree(&gPointsTextTexture);
     // for(int i = 0; i < TOTAL_DATA; i++){
     //    gDataTexture[i].textureFree(&gDataTexture[i]);
     // }

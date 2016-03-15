@@ -24,17 +24,21 @@ extern TTF_Font *gFont;
 //extern SDL_Rect gSpriteClips[ BUTTON_SPRITE_TOTAL ];
 //extern Button_object gButtons[TOTAL_BUTTONS];
 
-// extern Texture_object gPressTexture;
-// extern Texture_object gUpTexture;
-// extern Texture_object gDownTexture;
-// extern Texture_object gLeftTexture;
-// extern Texture_object gRightTexture;
-extern Texture_object gDotTexture;
-// extern Texture_object gPromptTextTexture;
+
+extern Texture_object gPacmanTexture;
+
+extern Texture_object gScoreTextTexture;
+extern Texture_object gPointsTextTexture;
+extern Texture_object gLivesTextTexture;
+
 // extern Texture_object gDataTexture[TOTAL_DATA];
 extern Texture_object gTileTexture;
 
 extern SDL_Rect gTileClips[TOTAL_TILE_SPRITES];
+
+// Variável pra guardar a pontuação do jogador
+extern unsigned long long int gScore;
+
 
 // // A música que será tocada
 // extern Mix_Music *gMusic;
@@ -50,7 +54,7 @@ extern Time_object fpsTimer;
 extern Time_object capTimer;
 
 // O ponto que vamos mexer pela tela
-extern Dot_object gDot;
+extern Dot_object gPacman;
 
 // // Iniciando outro ponto
 // extern Dot_object otherDot;

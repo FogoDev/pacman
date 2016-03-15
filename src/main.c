@@ -53,8 +53,8 @@ int main (int argc, char **argv)
             // Texture_object currentTexture;
             // Texture_object_new(&currentTexture);
             
-            // // Seta a cor do texto
-			// SDL_Color textColor = { 0, 0, 0, 0xFF };
+            // Seta a cor do texto
+			SDL_Color textColor = { 0xFF, 0xFF, 0xFF, 0xFF };
             // SDL_Color highlightColor = {0xFF, 0, 0, 0xFF};
             
             // // Ponto de input atual
@@ -70,8 +70,10 @@ int main (int argc, char **argv)
             // A entrada de texto atual
             // char *inputText = (char *) malloc(11 * sizeof(char)); 
             // memset(inputText, '\0', sizeof(char));
-    
-            // gInputTextTexture.loadFromRenderedText(&gInputTextTexture, "__________", textColor, gRenderer, gFont);
+            char scoreBuffer[21];
+            memset(scoreBuffer, '\0', sizeof(char) * 21);       
+            sprintf(scoreBuffer, "%llu", gScore);
+            gPointsTextTexture.loadFromRenderedText(&gPointsTextTexture, scoreBuffer, textColor, gRenderer, gFont);
             
             
             // // Ativa a entrada de texto do SDL
@@ -166,7 +168,7 @@ int main (int argc, char **argv)
                     // }
                     
                     // Manipula os inputs para o ponto
-                    gDot.handleEvent(&gDot, &e);
+                    gPacman.handleEvent(&gPacman, &e);
                     
                     // else if(e.type == SDL_KEYDOWN){
                         
@@ -264,9 +266,15 @@ int main (int argc, char **argv)
                 // }
                 
                 // Move o ponto
-                gDot.move(&gDot, tileSet);
+                gPacman.move(&gPacman, tileSet);
                 for (int i = 0; i < TOTAL_TILES; i++){
-                    if(eatPill(gDot.mCollider, tileSet[i]->mBox)){
+                    if(eatPill(gPacman.mCollider, tileSet[i]->mBox)){
+                        if(tileSet[i]->mType == 1){
+                            gScore += 10;
+                        } else if(tileSet[i]->mType == 2){
+                            gScore += 100;
+                        }
+                        
                         tileSet[i]->mType = 0;
                     }
                 }
@@ -303,14 +311,22 @@ int main (int argc, char **argv)
                 }
                 
                 // Renderiza o ponto
-                gDot.render(&gDot, &gDotTexture, gRenderer);
+                gPacman.render(&gPacman, &gPacmanTexture, gRenderer);
                 // otherDot.render(&otherDot, &gDotTexture, gRenderer);
                               
-                // // Renderiza as texturas de texto
-                // gPromptTextTexture.render(&gPromptTextTexture, (SCREEN_WIDTH - gPromptTextTexture.mWidth) / 2, 0, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
+                // Renderiza as texturas de texto
+                gScoreTextTexture.render(&gScoreTextTexture, TILE_WIDTH / 2, TILE_HEIGHT / 2, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
+                
+                memset(scoreBuffer, '\0', sizeof(char) * 21);       
+                sprintf(scoreBuffer, "%llu", gScore);
+                gPointsTextTexture.loadFromRenderedText(&gPointsTextTexture, scoreBuffer, textColor, gRenderer, gFont);
+                
+                gPointsTextTexture.render(&gPointsTextTexture, gScoreTextTexture.mWidth + TILE_WIDTH , TILE_HEIGHT / 2, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
+                
+                gLivesTextTexture.render(&gLivesTextTexture, TILE_WIDTH / 2, SCREEN_HEIGHT - (7* TILE_HEIGHT) /6, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
                 
                 // for(int i = 0; i < TOTAL_DATA; i++){
-                //     gDataTexture[i].render(&gDataTexture[i], (SCREEN_WIDTH - gDataTexture[i].mWidth) / 2, gPromptTextTexture.mHeight + gDataTexture[0].mHeight * i, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
+                //     gDataTexture[i].render(&gDataTexture[i], (SCREEN_WIDTH - gDataTexture[i].mWidth) / 2, gScoreTextTexture.mHeight + gDataTexture[0].mHeight * i, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
                 // }
                 
                 // Atualiza a tela

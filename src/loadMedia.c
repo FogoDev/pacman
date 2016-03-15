@@ -5,26 +5,27 @@ bool loadMedia(Tile_object *tiles[], SDL_Rect *gTileClips)
     // Inicializando a flag
     bool success = true;
     
+    // Cores de renderização do texto
+    SDL_Color textColor = {0xFF, 0xFF, 0xFF, 0xFF};
     
-    
-    
-    // // Cores de renderização do texto
-    // SDL_Color textColor = {0, 0, 0, 0xFF};
-    // SDL_Color highlightColor = {0xFF, 0, 0, 0xFF};
-    
-    // // Abre a fonte
-    // gFont = TTF_OpenFont("../res/fonts/lazy.ttf", 28);
-    // if(gFont == NULL){
-    //     printf("Falha ao carregar lazy font! SDL_ttf Error: %s\n", TTF_GetError());
-    //     success = false;
-    // } 
-    // else {
-    //     // Renderiza o texto
-    //     if(!gPromptTextTexture.loadFromRenderedText(&gPromptTextTexture, "Insira os dados:", textColor, gRenderer, gFont)){
-    //         printf("Falha ao renderizar a textura do texto!\n");
-    //         success = false;
-    //     }
-    // }
+    // Abre a fonte
+    gFont = TTF_OpenFont("../res/fonts/emulogic.ttf", 28);
+    if(gFont == NULL){
+        printf("Falha ao carregar lazy font! SDL_ttf Error: %s\n", TTF_GetError());
+        success = false;
+    } 
+    else {
+        // Renderiza o texto
+        if(!gScoreTextTexture.loadFromRenderedText(&gScoreTextTexture, "Score:", textColor, gRenderer, gFont)){
+            printf("Falha ao renderizar a textura do texto de score!\n");
+            success = false;
+        }
+        
+        if(!gLivesTextTexture.loadFromRenderedText(&gLivesTextTexture, "Lives:", textColor, gRenderer, gFont)){
+            printf("Falha ao renderizar a textura do texto da pontuação!\n");
+            success = false;
+        }
+    }
     
     
     // // Abre o arquivo pra leitura binária
@@ -117,8 +118,8 @@ bool loadMedia(Tile_object *tiles[], SDL_Rect *gTileClips)
     // }
     
     //Carrega a textura de dot
-    if(!gDotTexture.loadFromFile(&gDotTexture, "../res/images/dot.bmp", gRenderer)){
-        printf("Falha ao carregar a textura do dot!\n");
+    if(!gPacmanTexture.loadFromFile(&gPacmanTexture, "../res/images/dot.bmp", gRenderer)){
+        printf("Falha ao carregar a textura do pacman!\n");
         success = false;
     }
     
