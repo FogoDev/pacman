@@ -14,6 +14,7 @@
 #include "timeObject.h"
 #include "dotObject.h"
 #include "tileObject.h"
+#include "checkCollision.h"
 
 
 int main (int argc, char **argv)
@@ -264,7 +265,11 @@ int main (int argc, char **argv)
                 
                 // Move o ponto
                 gDot.move(&gDot, tileSet);
-                
+                for (int i = 0; i < TOTAL_TILES; i++){
+                    if(eatPill(gDot.mCollider, tileSet[i]->mBox)){
+                        tileSet[i]->mType = 0;
+                    }
+                }
                 
                 
                 // // Renderiza o texto se for preciso

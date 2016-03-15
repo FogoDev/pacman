@@ -17,6 +17,9 @@ bool checkCSCollision(Circle a, SDL_Rect b);
 // Detector de colisões circulo / circulo
 bool checkCCCollision(Circle a, Circle b);
 
+// Verifica se o pacman comeu uma pilula
+bool eatPill(Circle pacman, SDL_Rect pillTile);
+
 // Calcula a distância ao quadrado entre 2 pontos
 double distanceSquared(int x1, int y1, int x2, int y2);
 

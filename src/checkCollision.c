@@ -77,6 +77,40 @@ bool checkCSCollision(Circle a, SDL_Rect b)
 }
 
 
+
+bool eatPill(Circle pacman, SDL_Rect pillTile)
+{
+        // Ponto mais perto da collision boxes
+    int cX, cY;
+    
+    // Acha a posição mais perto de X
+    if(pacman.x < pillTile.x){
+        cX = pillTile.x;
+    } else if(pacman.x > pillTile.x + pillTile.w){
+        cX = pillTile.x + pillTile.w;
+    } else{
+        cX = pacman.x;
+    }
+    
+    // Acha a posição mais perto de y
+    if(pacman.y < pillTile.y){
+        cY = pillTile.y;
+    } else if(pacman.y > pillTile.y + pillTile.h){
+        cY = pillTile.y + pillTile.h;
+    } else{
+        cY = pacman.y;
+    }
+    
+    // Se o ponto mais perto for dentro do circulo
+    if(distanceSquared(pacman.x, pacman.y, cX, cY) < (pacman.r * pacman.r) / 16){
+        // Essa caixa e esse circulo colidiram
+        return true;
+    }
+    
+    // Se eles não colidiram
+    return false;
+}
+
 // Detector de colisões circulo / circulo
 bool checkCCCollision(Circle a, Circle b)
 {
