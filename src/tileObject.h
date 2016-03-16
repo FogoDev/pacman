@@ -11,11 +11,16 @@
 
 typedef struct _Tile_object {
     
+    // Renderiza os tiles 
     void (*render)(void *self, Texture_object *texture, SDL_Renderer *gRenderer, SDL_Rect *gTileClips);
     
+    // A collision box do tile
     SDL_Rect mBox;
     
+    // Tipo do tile
     int mType;
+    
+    int mRestore;
     
 } Tile_object;
 
@@ -24,7 +29,7 @@ void Tile_object_render(void *self, Texture_object *texture, SDL_Renderer *gRend
 
 Tile_object* Tile_object_new(Tile_object *tile, int x, int y, int tileType);
 
-// Inicializa os tijolos no mapa
+// Inicializa os tiles no mapa
 bool setTiles(Tile_object *tiles[], SDL_Rect *gTileClips);
 
 #endif

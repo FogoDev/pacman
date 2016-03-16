@@ -87,34 +87,18 @@ void Dot_object_move(void *self, Tile_object *tiles[])
 }
 
 
-void Dot_object_render(void *self, Texture_object *texture, SDL_Renderer *gRenderer)
+void Dot_object_render(void *self, Texture_object *texture, SDL_Renderer *gRenderer, SDL_Rect *gSpriteClip, double angle)
 {
     Dot_object *dot = self;
     
     // Renderiza o ponto na tela
-    texture->render(texture, (dot->mPosX - dot->mCollider.r), (dot->mPosY - dot->mCollider.r), gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
+    texture->render(texture, (dot->mPosX - dot->mCollider.r), (dot->mPosY - dot->mCollider.r), gRenderer, gSpriteClip, angle, NULL, SDL_FLIP_NONE);
 }
 
 
 void Dot_object_shiftColliders(void *self)
 {
     Dot_object *dot = self;
-    
-    // // Deslocamento da linha
-    // int r = 0;
-    
-    // // Itera por todas as collision boxes do ponto
-    // for(int set = 0; set < 11; set++){
-        
-    //     // Centraliza a collision box
-    //     dot->mColliders[set].x = dot->mPosX + (dot->DOT_WIDTH - dot->mColliders[set].w) / 2;
-        
-    //     // Inicia a collision box no começo do deslocamento da linha
-    //     dot->mColliders[set].y = dot->mPosY + r;
-        
-    //     // Move o deslocamento da linha pela altura da collision box
-    //     r += dot->mColliders[set].h;
-    // }
     
     // Alinha os colisores com o centro do ponto
     dot->mCollider.x = dot->mPosX;
@@ -135,11 +119,12 @@ void Dot_object_new(Dot_object *dot, int x, int y, bool ghost)
     // Inicia as constantes do ponto
     *(int *)&dot->DOT_WIDTH = 32;
     *(int *)&dot->DOT_HEIGHT = 32;
-    *(int *)&dot->DOT_VEL = 4;
+    dot->DOT_VEL = 2;
     
     // Inicia o raio de colisão do ponto
     dot->mCollider.r = dot->DOT_WIDTH / 2;
     
+    dot->mDirection = 0;
     
     // Inicia os atributos do ponto
     dot->mPosX = x + dot->DOT_WIDTH;
@@ -147,7 +132,6 @@ void Dot_object_new(Dot_object *dot, int x, int y, bool ghost)
     dot->mVelX = 0;
     dot->mVelY = 0;
     dot->mGhost = ghost;
-    
     
     // Inicializa os colisores relativos à posição
     dot->shiftColliders(dot);

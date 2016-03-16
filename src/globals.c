@@ -12,12 +12,9 @@ TTF_Font *gFont = NULL;
 // Objetos de textura e de botões
 //SDL_Rect gSpriteClips[ BUTTON_SPRITE_TOTAL ];
 //Button_object gButtons[TOTAL_BUTTONS];
-// Texture_object gPressTexture;
-// Texture_object gUpTexture;
-// Texture_object gDownTexture;
-// Texture_object gLeftTexture;
-// Texture_object gRightTexture;
 Texture_object gPacmanTexture;
+SDL_Rect gPacmanSpriteClips[PACMAN_WALKING_SPRITES];
+int pacmanFrame = 0;
 
 Texture_object gScoreTextTexture;
 Texture_object gPointsTextTexture;
@@ -31,14 +28,17 @@ SDL_Rect gTileClips[TOTAL_TILE_SPRITES];
 unsigned long long int gScore = 0;
 
 
-// // A música que será tocada
-// Mix_Music *gMusic = NULL;
+// As músicas que serão tocadas
+Mix_Music *gSirenMusic;
+Mix_Music *gIntermissionMusic;
 
-// // Os efeitos sonoros que serão usados
-// Mix_Chunk *gScratch = NULL;
-// Mix_Chunk *gHigh = NULL;
-// Mix_Chunk *gMedium = NULL;
-// Mix_Chunk *gLow = NULL;
+// Os efeitos sonoros que serão usados
+Mix_Chunk *gDiesSoundEffect;
+Mix_Chunk *gEatingCherrySoundEffect;
+Mix_Chunk *gEatingGhostSoundEffect;
+Mix_Chunk *gExtraLiveSoundEffect;
+Mix_Chunk *gOpeningSoundEffect;
+Mix_Chunk *gWakaWakaSoundEffect;
 
 // Temporizador para contar o fps
 Time_object fpsTimer;
@@ -48,9 +48,6 @@ Time_object capTimer;
 
 // O ponto que vamos mexer pela tela
 Dot_object gPacman;
-
-// Iniciando outro ponto
-//Dot_object otherDot;
 
 // Data points
 Sint32 gData[TOTAL_DATA];

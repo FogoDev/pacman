@@ -26,6 +26,7 @@ Tile_object* Tile_object_new(Tile_object *tile, int x, int y, int tileType)
     
     // Atribui o tipo de tile
     tile->mType = tileType;
+    tile->mRestore = 0;
     
     return tile;
 }

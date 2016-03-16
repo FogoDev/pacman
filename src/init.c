@@ -18,7 +18,7 @@ bool init()
         }
  
         // Cria a janela
-        gWindow = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+        gWindow = SDL_CreateWindow("The C Coded Pacman", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
         if(!gWindow){
             printf("A janela não pôde ser criada! SDL_Error: %s\n", SDL_GetError());
             success = false;
@@ -46,7 +46,7 @@ bool init()
                 }
                 
                 // Inicializa o SDL_mixer
-                if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0){
+                if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0 && Mix_Init(MIX_INIT_MP3)){
                     printf("SDL_mixer não pode ser inicializado! SDL_mixer Error: %s\n", Mix_GetError());
                     success = false;
                 }
@@ -57,11 +57,6 @@ bool init()
                 //     Button_object_new(&(gButtons[i]));  
                 // }
                 
-                // Texture_object_new(&gPressTexture);
-                // Texture_object_new(&gUpTexture);
-                // Texture_object_new(&gDownTexture);
-                // Texture_object_new(&gLeftTexture);
-                // Texture_object_new(&gRightTexture);
                 
                 // Texture_object_new(&gPromptTextTexture);
                 // for(int i = 0; i < TOTAL_DATA; i++){
@@ -80,7 +75,7 @@ bool init()
                 Time_object_new(&capTimer);
                 
                 Dot_object_new(&gPacman, 32, 368, false);
-                // Dot_object_new(&otherDot, SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4);
+                
                 
                 
                 

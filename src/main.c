@@ -44,8 +44,6 @@ int main (int argc, char **argv)
             // // Frame atual da animação
             // int frame = 0;
             
-            // // Ângulo de rotação
-            // double degrees = 0;
             
             // // Tipo de flip
             // SDL_RendererFlip flipType = SDL_FLIP_NONE;
@@ -64,8 +62,6 @@ int main (int argc, char **argv)
             int countedFrames = 0;
             fpsTimer.start(&fpsTimer);
   
-            // // A parede
-            // SDL_Rect wall = {300, 40, 40, 400};       
             
             // A entrada de texto atual
             // char *inputText = (char *) malloc(11 * sizeof(char)); 
@@ -75,6 +71,8 @@ int main (int argc, char **argv)
             sprintf(scoreBuffer, "%llu", gScore);
             gPointsTextTexture.loadFromRenderedText(&gPointsTextTexture, scoreBuffer, textColor, gRenderer, gFont);
             
+            int playingWaka = 0;
+            int stopPlayingWaka = 0;
             
             // // Ativa a entrada de texto do SDL
             // SDL_StartTextInput();
@@ -233,22 +231,7 @@ int main (int argc, char **argv)
                     //     }
                     // }
                 }
-                
-                // Seta a textura baseada no estado atual da tecla pressionada
-                // const uint8_t *currentKeyStates = SDL_GetKeyboardState(NULL);
-                // if(currentKeyStates[SDL_SCANCODE_UP]){
-                //     currentTexture = gUpTexture;
-                // } else if(currentKeyStates[SDL_SCANCODE_DOWN]){
-                //     currentTexture = gDownTexture;
-                // } else if(currentKeyStates[SDL_SCANCODE_LEFT]){
-                //     currentTexture = gLeftTexture;
-                // } else if(currentKeyStates[SDL_SCANCODE_RIGHT]){
-                //     currentTexture = gRightTexture;
-                // } else {
-                //     currentTexture = gPressTexture;
-                // }
-                //gTime.getTicks(&gTime);
-                
+                          
                 
                 // Calcula e corrige o FPS
                 float avgFPS = countedFrames / (fpsTimer.getTicks(&fpsTimer) / 1000.0);
@@ -256,29 +239,50 @@ int main (int argc, char **argv)
                     avgFPS = 0;
                 }
                 
-                // char avgFPSText[20];
-                // sprintf(avgFPSText, "%f", avgFPS);
-                
-                
-                // // Renderiza o texto
-                // if(!gFPSTextTexture.loadFromRenderedText(&gFPSTextTexture, avgFPSText, textColor, gRenderer, gFont)){
-                //     printf("Falha ao renderizar a textura FPS!\n");
-                // }
-                
+                // Captura a posição do pacman antes de movê-lo
+                int lastX = gPacman.mPosX;
+                int lastY = gPacman.mPosY;
+
                 // Move o ponto
                 gPacman.move(&gPacman, tileSet);
                 for (int i = 0; i < TOTAL_TILES; i++){
                     if(eatPill(gPacman.mCollider, tileSet[i]->mBox)){
+                        if(tileSet[i]->mType == 1 || tileSet[i]->mType == 2){
+                            if(!Mix_Playing(1)) {
+                                Mix_PlayChannel( 1, gWakaWakaSoundEffect, -1);
+                                playingWaka = 1;
+                                stopPlayingWaka = 0;
+                            }
+                        }
+                        
                         if(tileSet[i]->mType == 1){
                             gScore += 10;
                         } else if(tileSet[i]->mType == 2){
                             gScore += 100;
                         }
                         
+                        
                         tileSet[i]->mType = 0;
                     }
                 }
                 
+                if(playingWaka){
+                    if(stopPlayingWaka){
+                        Mix_HaltChannel(1);
+                        playingWaka = 0;    
+                    } 
+                    
+                } 
+                
+                // Posiciona o ângulo que o pacman vai ser renderizado de acordo com o movimento que ele fez 
+                if(lastX < gPacman.mPosX) gPacman.mDirection = 0;
+                else if(lastX > gPacman.mPosX) gPacman.mDirection = 180;
+                else if(lastY < gPacman.mPosY) gPacman.mDirection = 90;
+                else if(lastY > gPacman.mPosY) gPacman.mDirection = 270;
+                else {
+                    pacmanFrame = 0;
+                    stopPlayingWaka = 1;
+                }
                 
                 // // Renderiza o texto se for preciso
                 // if(renderText){
@@ -296,23 +300,17 @@ int main (int argc, char **argv)
                 SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
                 SDL_RenderClear(gRenderer);
                 
-                // // Renderiza a textura atual
-                // gFPSTextTexture.render(&gFPSTextTexture, (SCREEN_WIDTH - gFPSTextTexture.mWidth) / 2, (SCREEN_HEIGHT - gFPSTextTexture.mHeight) / 2, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
-                              
-                // // Renderiza a parede
-                // SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
-                // SDL_RenderDrawRect(gRenderer, &wall);
                 
                 // Renderiza o mapa
                 for(int i = 0; i < TOTAL_TILES; i++){
-                    
                     gTileTexture.render(&gTileTexture, tileSet[i]->mBox.x, tileSet[i]->mBox.y, gRenderer, &(gTileClips[tileSet[i]->mType]), 0.0, NULL, SDL_FLIP_NONE);
                     // tileSet[i]->render(tileSet[i], &gTileTexture, gRenderer, gTileClips);
                 }
                 
-                // Renderiza o ponto
-                gPacman.render(&gPacman, &gPacmanTexture, gRenderer);
-                // otherDot.render(&otherDot, &gDotTexture, gRenderer);
+                // Renderiza o pacman
+                SDL_Rect *currentPacmanClip = &gPacmanSpriteClips[pacmanFrame / PACMAN_WALKING_SPRITES];
+                gPacman.render(&gPacman, &gPacmanTexture, gRenderer, currentPacmanClip, gPacman.mDirection);
+                
                               
                 // Renderiza as texturas de texto
                 gScoreTextTexture.render(&gScoreTextTexture, TILE_WIDTH / 2, TILE_HEIGHT / 2, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
@@ -333,6 +331,12 @@ int main (int argc, char **argv)
                 SDL_RenderPresent(gRenderer);
                 countedFrames++;
                 
+                // Vai para o próximo frame do Pacman
+                pacmanFrame++;
+                
+                // Circula a animação do Pacman
+                if(pacmanFrame / PACMAN_WALKING_SPRITES >= PACMAN_WALKING_SPRITES) pacmanFrame = 0;
+                
                 // Se o frame terminar cedo
                 int frameTicks = capTimer.getTicks(&capTimer);
                 if(frameTicks < SCREEN_TICKS_PER_FRAME){
@@ -340,16 +344,13 @@ int main (int argc, char **argv)
                     SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
                 }
                 // Desabilita o input de texto
-                
+                // SDL_StopTextInput();
+                // if(inputText) free(inputText);
             }
-            //currentTexture.textureFree(&currentTexture);
-            
         }
     }
     
     // Libera os recursos e fecha o SDL
-    // if(inputText) free(inputText);
-    // SDL_StopTextInput();
     closeProgram(tileSet);
         
     return 0;

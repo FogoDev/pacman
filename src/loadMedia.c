@@ -91,36 +91,35 @@ bool loadMedia(Tile_object *tiles[], SDL_Rect *gTileClips)
 	// 	gButtons[3].setPosition(&gButtons[3], SCREEN_WIDTH - BUTTON_WIDTH, SCREEN_HEIGHT - BUTTON_HEIGHT );
     // }
     
-    // Carrega as texturas press, up, down, left e right
-    // if(!gPressTexture.loadFromFile(&gPressTexture, "../res/images/press.bmp", gRenderer)){
-    //     printf("Falha ao carregar a textura de press!\n");
-    //     success = false;
-    // }
-    
-    // if(!gUpTexture.loadFromFile(&gUpTexture, "../res/images/up.bmp", gRenderer)){
-    //     printf("Falha ao carregar a textura de up!\n");
-    //     success = false;
-    // }
-    
-    // if(!gDownTexture.loadFromFile(&gDownTexture, "../res/images/down.bmp", gRenderer)){
-    //     printf("Falha ao carregar a textura de down!\n");
-    //     success = false;
-    // }
-    
-    // if(!gLeftTexture.loadFromFile(&gLeftTexture, "../res/images/left.bmp", gRenderer)){
-    //     printf("Falha ao carregar a textura de left!\n");
-    //     success = false;
-    // }
-    
-    // if(!gRightTexture.loadFromFile(&gRightTexture, "../res/images/right.bmp", gRenderer)){
-    //     printf("Falha ao carregar a textura de right!\n");
-    //     success = false;
-    // }
     
     //Carrega a textura de dot
-    if(!gPacmanTexture.loadFromFile(&gPacmanTexture, "../res/images/dot.bmp", gRenderer)){
+    if(!gPacmanTexture.loadFromFile(&gPacmanTexture, "../res/sprites/map_sprites.png", gRenderer)){
         printf("Falha ao carregar a textura do pacman!\n");
         success = false;
+    } else {
+        
+        // Seta os sprite clips
+        gPacmanSpriteClips[0].x = 0;
+        gPacmanSpriteClips[0].y = 192;
+        gPacmanSpriteClips[0].w = TILE_WIDTH;
+        gPacmanSpriteClips[0].h = TILE_HEIGHT;
+        
+        gPacmanSpriteClips[1].x = 32;
+        gPacmanSpriteClips[1].y = 192;
+        gPacmanSpriteClips[1].w = TILE_WIDTH;
+        gPacmanSpriteClips[1].h = TILE_HEIGHT;
+        
+        gPacmanSpriteClips[2].x = 64;
+        gPacmanSpriteClips[2].y = 192;
+        gPacmanSpriteClips[2].w = TILE_WIDTH;
+        gPacmanSpriteClips[2].h = TILE_HEIGHT;
+        
+        gPacmanSpriteClips[3].x = 96;
+        gPacmanSpriteClips[3].y = 192;
+        gPacmanSpriteClips[3].w = TILE_WIDTH;
+        gPacmanSpriteClips[3].h = TILE_HEIGHT;
+        
+        
     }
     
     // Carrega a textura dos tiles
@@ -135,38 +134,57 @@ bool loadMedia(Tile_object *tiles[], SDL_Rect *gTileClips)
         success = false;
     }
     
-    // // Carregaa música
-    // gMusic = Mix_LoadMUS("../res/sound/music/beat.wav");
-    // if(gMusic == NULL){
-    //     printf("Falha ao carregar a música de fundo! SDL_mixer Error: %s\n", Mix_GetError());
-    //     success = false;
-    // }
+    // Carrega música siren
+    gSirenMusic = Mix_LoadMUS("../res/sound/music/siren.mp3");
+    if(gSirenMusic == NULL){
+        printf("Falha ao carregar a música de siren! SDL_mixer Error: %s\n", Mix_GetError());
+        success = false;
+    }
     
-    // // Carrega efeitos sonoros
-    // gScratch = Mix_LoadWAV("../res/sound/effects/scratch.wav");
-    // if(gScratch == NULL){
-    //     printf("Falha ao carregar o efeito sonoro scratch! SDL_mixer Error: %s\n", Mix_GetError());
-    //     success = false;
-    // }
+    // Carrega música intermission
+    gIntermissionMusic = Mix_LoadMUS("../res/sound/music/intermission.mp3");
+    if(gIntermissionMusic == NULL){
+        printf("Falha ao carregar a música de intermission! SDL_mixer Error: %s\n", Mix_GetError());
+        success = false;
+    }
+    
+    
+    // Carrega efeitos sonoros do jogo
+    gDiesSoundEffect = Mix_LoadWAV("../res/sound/effects/dies.ogg");
+    if(gDiesSoundEffect == NULL){
+        printf("Falha ao carregar o efeito sonoro dies! SDL_mixer Error: %s\n", Mix_GetError());
+        success = false;
+    }
 
-    // gHigh = Mix_LoadWAV("../res/sound/effects/high.wav");
-    // if(gHigh == NULL){
-    //     printf("Falha ao carregar o efeito sonoro high! SDL_mixer Error: %s\n", Mix_GetError());
-    //     success = false;
-    // }
+    gEatingCherrySoundEffect = Mix_LoadWAV("../res/sound/effects/eating_cherry.ogg");
+    if(gEatingCherrySoundEffect == NULL){
+        printf("Falha ao carregar o efeito sonoro eating_cherry! SDL_mixer Error: %s\n", Mix_GetError());
+        success = false;
+    }
     
-    // gMedium = Mix_LoadWAV("../res/sound/effects/medium.wav");
-    // if(gMedium == NULL){
-    //     printf("Falha ao carregar o efeito sonoro medium! SDL_mixer Error: %s\n", Mix_GetError());
-    //     success = false;
-    // }
+    gEatingGhostSoundEffect = Mix_LoadWAV("../res/sound/effects/eating_ghost.ogg");
+    if(gEatingGhostSoundEffect == NULL){
+        printf("Falha ao carregar o efeito sonoro eating_ghost! SDL_mixer Error: %s\n", Mix_GetError());
+        success = false;
+    }
     
-    // gLow = Mix_LoadWAV("../res/sound/effects/low.wav");
-    // if(gLow == NULL){
-    //     printf("Falha ao carregar o efeito sonoro low! SDL_mixer Error: %s\n", Mix_GetError());
-    //     success = false;
-    // }
+    gExtraLiveSoundEffect = Mix_LoadWAV("../res/sound/effects/extra_live.ogg");
+    if(gExtraLiveSoundEffect == NULL){
+        printf("Falha ao carregar o efeito sonoro extra_live! SDL_mixer Error: %s\n", Mix_GetError());
+        success = false;
+    }
     
+    gOpeningSoundEffect = Mix_LoadWAV("../res/sound/effects/opening.ogg");
+    if(gOpeningSoundEffect == NULL){
+        printf("Falha ao carregar o efeito sonoro opening! SDL_mixer Error: %s\n", Mix_GetError());
+        success = false;
+    }
+    
+    gWakaWakaSoundEffect = Mix_LoadWAV("../res/sound/effects/waka_waka.ogg");
+    if(gWakaWakaSoundEffect == NULL){
+        printf("Falha ao carregar o efeito sonoro waka_waka! SDL_mixer Error: %s\n", Mix_GetError());
+        success = false;
+    }
     
     return success;
 }

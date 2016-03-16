@@ -26,6 +26,9 @@ extern TTF_Font *gFont;
 
 
 extern Texture_object gPacmanTexture;
+extern SDL_Rect gPacmanSpriteClips[PACMAN_WALKING_SPRITES];
+extern int pacmanFrame;
+
 
 extern Texture_object gScoreTextTexture;
 extern Texture_object gPointsTextTexture;
@@ -40,14 +43,17 @@ extern SDL_Rect gTileClips[TOTAL_TILE_SPRITES];
 extern unsigned long long int gScore;
 
 
-// // A música que será tocada
-// extern Mix_Music *gMusic;
+// As músicas que serão tocadas
+extern Mix_Music *gSirenMusic;
+extern Mix_Music *gIntermissionMusic;
 
-// // Os efeitos sonoros que serão usados
-// extern Mix_Chunk *gScratch;
-// extern Mix_Chunk *gHigh;
-// extern Mix_Chunk *gMedium;
-// extern Mix_Chunk *gLow;
+// Os efeitos sonoros que serão usados
+extern Mix_Chunk *gDiesSoundEffect;
+extern Mix_Chunk *gEatingCherrySoundEffect;
+extern Mix_Chunk *gEatingGhostSoundEffect;
+extern Mix_Chunk *gExtraLiveSoundEffect;
+extern Mix_Chunk *gOpeningSoundEffect;
+extern Mix_Chunk *gWakaWakaSoundEffect;
 
 // Temporizador
 extern Time_object fpsTimer;
@@ -55,9 +61,6 @@ extern Time_object capTimer;
 
 // O ponto que vamos mexer pela tela
 extern Dot_object gPacman;
-
-// // Iniciando outro ponto
-// extern Dot_object otherDot;
 
 // Data points
 extern Sint32 gData[TOTAL_DATA];

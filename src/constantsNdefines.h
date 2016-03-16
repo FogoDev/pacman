@@ -13,8 +13,6 @@ typedef short int bool;
 #define false 0
 #define true !false
 
-#define WALKING_ANIMATION_FRAMES 4
-
 #define BUTTON_WIDTH 300
 #define BUTTON_HEIGHT 200
 #define TOTAL_BUTTONS 4
@@ -74,5 +72,11 @@ enum _Tiles
     TILE_CAGE_HORIZONTAL_LEFT,  // 24
     TILE_CAGE_DOOR              // 25
 };
+
+
+// Constantes de sprites do Pacman
+#define PACMAN_WALKING_SPRITES 4
+#define PACMAN_DEATH_SPRITES 10
+
 
 #endif

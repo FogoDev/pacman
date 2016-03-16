@@ -29,10 +29,7 @@ void closeProgram(Tile_object *tiles[])
     // Desaloca textura da memória
     //gButtonSpriteSheetTexture.textureFree(&gButtonSpriteSheetTexture);
     // gPressTexture.textureFree(&gPressTexture);
-    // gUpTexture.textureFree(&gUpTexture);
-    // gDownTexture.textureFree(&gDownTexture);
-    // gLeftTexture.textureFree(&gLeftTexture);
-    // gRightTexture.textureFree(&gRightTexture);
+    
     gPacmanTexture.textureFree(&gPacmanTexture);
     gTileTexture.textureFree(&gTileTexture);
     gScoreTextTexture.textureFree(&gScoreTextTexture);
@@ -43,19 +40,26 @@ void closeProgram(Tile_object *tiles[])
     // }
     
     
-    // // Libera os efeitos sonoros
-    // Mix_FreeChunk(gScratch);
-    // Mix_FreeChunk(gHigh);
-    // Mix_FreeChunk(gMedium);
-    // Mix_FreeChunk(gLow);
-    // gScratch = NULL;
-    // gHigh = NULL;
-    // gMedium = NULL;
-    // gLow = NULL;
+    // Libera os efeitos sonoros
+    Mix_FreeChunk(gDiesSoundEffect);
+    Mix_FreeChunk(gEatingCherrySoundEffect);
+    Mix_FreeChunk(gEatingGhostSoundEffect);
+    Mix_FreeChunk(gExtraLiveSoundEffect);
+    Mix_FreeChunk(gOpeningSoundEffect);
+    Mix_FreeChunk(gWakaWakaSoundEffect);
+    
+    gDiesSoundEffect = NULL;
+    gEatingCherrySoundEffect = NULL;
+    gEatingGhostSoundEffect = NULL;
+    gExtraLiveSoundEffect = NULL;
+    gOpeningSoundEffect = NULL;
+    gWakaWakaSoundEffect = NULL;
     
     // Libera a música
-    // Mix_FreeMusic(gMusic);
-    // gMusic = NULL;
+    Mix_FreeMusic(gSirenMusic);
+    Mix_FreeMusic(gIntermissionMusic);
+    gSirenMusic = NULL;
+    gIntermissionMusic = NULL;
     
     // Libera a fonte global
     TTF_CloseFont(gFont);

@@ -5,7 +5,7 @@ SDL_Texture *loadTexture(const char *path)
     // A textura final
     SDL_Texture *newTexture = NULL;
     
-    // Carega uma imagem especificada pelo path
+    // Carrega uma imagem especificada pelo path
     SDL_Surface *loadedSurface = IMG_Load(path);
     if(!loadedSurface){
         printf("Não foi possível carregar a imagem %s! SDL Error: %s\n", path, SDL_GetError());

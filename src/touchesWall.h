@@ -8,7 +8,6 @@
 #include <stdio.h>
 #include "constantsNdefines.h"
 #include "checkCollision.h"
-// #include "globals.h"
 #include "tileObject.h"
 
 // Checa a colisão contra os tijolos do mapa
