@@ -63,23 +63,31 @@ bool init()
                 //     Texture_object_new(&gDataTexture[i]);
                 // }
                 
+                // Inicializa textura dos tiles
                 Texture_object_new(&gTileTexture);
 
+                // Inicializa textura do pacman
                 Texture_object_new(&gPacmanTexture);
 
+                // Inicializa texturas de texto do jogo
                 Texture_object_new(&gScoreTextTexture);
                 Texture_object_new(&gPointsTextTexture);
                 Texture_object_new(&gLivesTextTexture);
                 
+                // Inicializa textura do desenvolvedor 
+                Texture_object_new(&gDevTextTexture);
+                
+                // Inicializa texturas da tela inicial 
+                Texture_object_new(&gPacmanLogoTexture);
+                Texture_object_new(&gPressEnterTextTexture);
+                
+                // Inicializa os temporizadores
                 Time_object_new(&fpsTimer);
                 Time_object_new(&capTimer);
                 
+                // Inicializa o pacman
                 Dot_object_new(&gPacman, 32, 368, false);
-                
-                
-                
-                
-                
+                   
             }
         }
     }

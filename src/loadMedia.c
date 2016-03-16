@@ -11,7 +11,7 @@ bool loadMedia(Tile_object *tiles[], SDL_Rect *gTileClips)
     // Abre a fonte
     gFont = TTF_OpenFont("../res/fonts/emulogic.ttf", 28);
     if(gFont == NULL){
-        printf("Falha ao carregar lazy font! SDL_ttf Error: %s\n", TTF_GetError());
+        printf("Falha ao carregar fonte de jogo! SDL_ttf Error: %s\n", TTF_GetError());
         success = false;
     } 
     else {
@@ -25,6 +25,28 @@ bool loadMedia(Tile_object *tiles[], SDL_Rect *gTileClips)
             printf("Falha ao renderizar a textura do texto da pontuação!\n");
             success = false;
         }
+    }
+    
+    gDevFont = TTF_OpenFont("../res/fonts/emulogic.ttf", 22);
+    if(gDevFont == NULL){
+        printf("Falha ao carregar fonte de jogo! SDL_ttf Error: %s\n", TTF_GetError());
+        success = false;
+    } else {
+        
+        if(!gDevTextTexture.loadFromRenderedText(&gDevTextTexture, "github.com/FogoDev/pacman", textColor, gRenderer, gDevFont)){
+            printf("Falha ao renderizar a textura do texto de desenvolvedor!\n");
+            success = false;
+        }
+        
+        if(!gPressEnterTextTexture.loadFromRenderedText(&gPressEnterTextTexture, "Pressione ENTER para jogar", textColor, gRenderer, gDevFont)){
+            printf("Falha ao renderizar a textura do texto da pontuação!\n");
+            success = false;
+        }
+    }
+    
+    if(!gPacmanLogoTexture.loadFromFile(&gPacmanLogoTexture, "../res/sprites/pacman_logo.png", gRenderer)){
+        printf("Falha ao carregar a textura de Logo do Pacman!\n");
+        success = false;
     }
     
     
@@ -135,14 +157,14 @@ bool loadMedia(Tile_object *tiles[], SDL_Rect *gTileClips)
     }
     
     // Carrega música siren
-    gSirenMusic = Mix_LoadMUS("../res/sound/music/siren.mp3");
+    gSirenMusic = Mix_LoadWAV("../res/sound/music/siren.ogg");
     if(gSirenMusic == NULL){
         printf("Falha ao carregar a música de siren! SDL_mixer Error: %s\n", Mix_GetError());
         success = false;
     }
     
     // Carrega música intermission
-    gIntermissionMusic = Mix_LoadMUS("../res/sound/music/intermission.mp3");
+    gIntermissionMusic = Mix_LoadWAV("../res/sound/music/intermission.ogg");
     if(gIntermissionMusic == NULL){
         printf("Falha ao carregar a música de intermission! SDL_mixer Error: %s\n", Mix_GetError());
         success = false;

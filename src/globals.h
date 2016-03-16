@@ -20,6 +20,9 @@ extern SDL_Renderer *gRenderer;
 // Fonte usada globalmente
 extern TTF_Font *gFont;
 
+// Fonte usada na tela inicial
+extern TTF_Font *gDevFont;
+
 // Objetos de textura
 //extern SDL_Rect gSpriteClips[ BUTTON_SPRITE_TOTAL ];
 //extern Button_object gButtons[TOTAL_BUTTONS];
@@ -44,8 +47,8 @@ extern unsigned long long int gScore;
 
 
 // As músicas que serão tocadas
-extern Mix_Music *gSirenMusic;
-extern Mix_Music *gIntermissionMusic;
+extern Mix_Chunk *gSirenMusic;
+extern Mix_Chunk *gIntermissionMusic;
 
 // Os efeitos sonoros que serão usados
 extern Mix_Chunk *gDiesSoundEffect;
@@ -67,5 +70,12 @@ extern Sint32 gData[TOTAL_DATA];
 
 // Mapa de tiles
 extern Tile_object *tileSet[TOTAL_TILES];
+
+// Textura do texto do desenvolvedor
+extern Texture_object gDevTextTexture;
+
+// Texturas da Tela inicial
+extern Texture_object gPacmanLogoTexture;
+extern Texture_object gPressEnterTextTexture;
 
 #endif

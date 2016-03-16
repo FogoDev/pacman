@@ -9,6 +9,9 @@ SDL_Renderer *gRenderer = NULL;
 // Fonte usada globalmente
 TTF_Font *gFont = NULL;
 
+// Fonte usada na tela inicial
+TTF_Font *gDevFont = NULL;
+
 // Objetos de textura e de botões
 //SDL_Rect gSpriteClips[ BUTTON_SPRITE_TOTAL ];
 //Button_object gButtons[TOTAL_BUTTONS];
@@ -29,8 +32,8 @@ unsigned long long int gScore = 0;
 
 
 // As músicas que serão tocadas
-Mix_Music *gSirenMusic;
-Mix_Music *gIntermissionMusic;
+Mix_Chunk *gSirenMusic;
+Mix_Chunk *gIntermissionMusic;
 
 // Os efeitos sonoros que serão usados
 Mix_Chunk *gDiesSoundEffect;
@@ -54,3 +57,11 @@ Sint32 gData[TOTAL_DATA];
 
 // Mapa de tiles
 Tile_object *tileSet[TOTAL_TILES];
+
+
+// Textura do texto do desenvolvedor
+Texture_object gDevTextTexture;
+
+// Texturas da Tela inicial
+Texture_object gPacmanLogoTexture;
+Texture_object gPressEnterTextTexture;

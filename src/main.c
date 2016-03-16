@@ -51,6 +51,12 @@ int main (int argc, char **argv)
             // Texture_object currentTexture;
             // Texture_object_new(&currentTexture);
             
+            
+            // Variáveis do jogo
+            bool gameStarted = false;
+            int lives = 3;
+            uint8_t devTextAlpha = 255;
+            
             // Seta a cor do texto
 			SDL_Color textColor = { 0xFF, 0xFF, 0xFF, 0xFF };
             // SDL_Color highlightColor = {0xFF, 0, 0, 0xFF};
@@ -94,6 +100,14 @@ int main (int argc, char **argv)
                         quit = true;
                     } 
                     
+                    else if(!gameStarted){
+                        if(e.key.keysym.sym == SDLK_RETURN || e.key.keysym.sym == SDLK_KP_ENTER){
+                            gameStarted = 1;
+                            Mix_HaltChannel(2);
+                            Mix_PlayChannel(0, gOpeningSoundEffect, 1);
+                            
+                        }
+                    }
                     // else if(e.type == SDL_KEYDOWN){
                     //     // Manipula backspace
                     //     // if(e.key.keysym.sym == SDLK_BACKSPACE && strlen(inputText) > 0){
@@ -166,7 +180,7 @@ int main (int argc, char **argv)
                     // }
                     
                     // Manipula os inputs para o ponto
-                    gPacman.handleEvent(&gPacman, &e);
+                    if(gameStarted) gPacman.handleEvent(&gPacman, &e);
                     
                     // else if(e.type == SDL_KEYDOWN){
                         
@@ -297,35 +311,53 @@ int main (int argc, char **argv)
                 // }
                 
                 // Limpa o renderizador
-                SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+                SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 0xFF);
                 SDL_RenderClear(gRenderer);
                 
                 
-                // Renderiza o mapa
-                for(int i = 0; i < TOTAL_TILES; i++){
-                    gTileTexture.render(&gTileTexture, tileSet[i]->mBox.x, tileSet[i]->mBox.y, gRenderer, &(gTileClips[tileSet[i]->mType]), 0.0, NULL, SDL_FLIP_NONE);
-                    // tileSet[i]->render(tileSet[i], &gTileTexture, gRenderer, gTileClips);
+                if(gameStarted){
+                    if(!Mix_Playing(3) && !Mix_Playing(0)) Mix_PlayChannel(3, gSirenMusic, -1);
+                    // Renderiza o mapa
+                    for(int i = 0; i < TOTAL_TILES; i++){
+                        gTileTexture.render(&gTileTexture, tileSet[i]->mBox.x, tileSet[i]->mBox.y, gRenderer, &(gTileClips[tileSet[i]->mType]), 0.0, NULL, SDL_FLIP_NONE);
+                        // tileSet[i]->render(tileSet[i], &gTileTexture, gRenderer, gTileClips);
+                    }
+                    
+                    // Renderiza o pacman
+                    SDL_Rect *currentPacmanClip = &gPacmanSpriteClips[pacmanFrame / PACMAN_WALKING_SPRITES];
+                    gPacman.render(&gPacman, &gPacmanTexture, gRenderer, currentPacmanClip, gPacman.mDirection);
+                    
+                                
+                    // Renderiza as texturas de texto
+                    gScoreTextTexture.render(&gScoreTextTexture, TILE_WIDTH / 2, TILE_HEIGHT / 2, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
+                    
+                    memset(scoreBuffer, '\0', sizeof(char) * 21);       
+                    sprintf(scoreBuffer, "%llu", gScore);
+                    gPointsTextTexture.loadFromRenderedText(&gPointsTextTexture, scoreBuffer, textColor, gRenderer, gFont);
+                    
+                    gPointsTextTexture.render(&gPointsTextTexture, gScoreTextTexture.mWidth + TILE_WIDTH , TILE_HEIGHT / 2, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
+                    
+                    gLivesTextTexture.render(&gLivesTextTexture, TILE_WIDTH / 2, SCREEN_HEIGHT - (7* TILE_HEIGHT) /6, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
+                    for(int i = 0; i < lives; i++){
+                        gPacmanTexture.render(&gPacmanTexture, TILE_WIDTH + gLivesTextTexture.mWidth + ((5 * TILE_WIDTH / 4) * i), SCREEN_HEIGHT -  TILE_HEIGHT -2, gRenderer, &gPacmanSpriteClips[2], 0.0, NULL, SDL_FLIP_NONE);
+                    }
+                    
+                    // for(int i = 0; i < TOTAL_DATA; i++){
+                    //     gDataTexture[i].render(&gDataTexture[i], (SCREEN_WIDTH - gDataTexture[i].mWidth) / 2, gScoreTextTexture.mHeight + gDataTexture[0].mHeight * i, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
+                    // }
+                
+                } else {
+                    if(!Mix_Playing(2)) Mix_PlayChannel(2, gIntermissionMusic, -1);
+                    gPacmanLogoTexture.render(&gPacmanLogoTexture, (SCREEN_WIDTH - gPacmanLogoTexture.mWidth) / 2, SCREEN_HEIGHT / 4, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
+                    gPressEnterTextTexture.render(&gPressEnterTextTexture, (SCREEN_WIDTH - gPressEnterTextTexture.mWidth) / 2, 3 * SCREEN_HEIGHT / 4 , gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
+                    gDevTextTexture.setAlpha(&gDevTextTexture, devTextAlpha);
+                    if(devTextAlpha > 0) SDL_RenderClear(gRenderer);
+                    gDevTextTexture.render(&gDevTextTexture, (SCREEN_WIDTH - gDevTextTexture.mWidth) / 2, SCREEN_HEIGHT / 2 , gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
+                    if(devTextAlpha > 0) SDL_Delay(10);
+                    if(devTextAlpha > 0) devTextAlpha--;
+                    if(devTextAlpha < 0) devTextAlpha = 0;
                 }
                 
-                // Renderiza o pacman
-                SDL_Rect *currentPacmanClip = &gPacmanSpriteClips[pacmanFrame / PACMAN_WALKING_SPRITES];
-                gPacman.render(&gPacman, &gPacmanTexture, gRenderer, currentPacmanClip, gPacman.mDirection);
-                
-                              
-                // Renderiza as texturas de texto
-                gScoreTextTexture.render(&gScoreTextTexture, TILE_WIDTH / 2, TILE_HEIGHT / 2, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
-                
-                memset(scoreBuffer, '\0', sizeof(char) * 21);       
-                sprintf(scoreBuffer, "%llu", gScore);
-                gPointsTextTexture.loadFromRenderedText(&gPointsTextTexture, scoreBuffer, textColor, gRenderer, gFont);
-                
-                gPointsTextTexture.render(&gPointsTextTexture, gScoreTextTexture.mWidth + TILE_WIDTH , TILE_HEIGHT / 2, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
-                
-                gLivesTextTexture.render(&gLivesTextTexture, TILE_WIDTH / 2, SCREEN_HEIGHT - (7* TILE_HEIGHT) /6, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
-                
-                // for(int i = 0; i < TOTAL_DATA; i++){
-                //     gDataTexture[i].render(&gDataTexture[i], (SCREEN_WIDTH - gDataTexture[i].mWidth) / 2, gScoreTextTexture.mHeight + gDataTexture[0].mHeight * i, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
-                // }
                 
                 // Atualiza a tela
                 SDL_RenderPresent(gRenderer);

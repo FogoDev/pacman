@@ -26,15 +26,16 @@ void closeProgram(Tile_object *tiles[])
     // }
     
     
-    // Desaloca textura da memória
-    //gButtonSpriteSheetTexture.textureFree(&gButtonSpriteSheetTexture);
-    // gPressTexture.textureFree(&gPressTexture);
-    
+    // Libera as texturas
     gPacmanTexture.textureFree(&gPacmanTexture);
     gTileTexture.textureFree(&gTileTexture);
     gScoreTextTexture.textureFree(&gScoreTextTexture);
     gLivesTextTexture.textureFree(&gLivesTextTexture);
     gPointsTextTexture.textureFree(&gPointsTextTexture);
+    gDevTextTexture.textureFree(&gDevTextTexture);
+    gPacmanLogoTexture.textureFree(&gPacmanLogoTexture);
+    gPressEnterTextTexture.textureFree(&gPressEnterTextTexture);
+    
     // for(int i = 0; i < TOTAL_DATA; i++){
     //    gDataTexture[i].textureFree(&gDataTexture[i]);
     // }
@@ -56,14 +57,16 @@ void closeProgram(Tile_object *tiles[])
     gWakaWakaSoundEffect = NULL;
     
     // Libera a música
-    Mix_FreeMusic(gSirenMusic);
-    Mix_FreeMusic(gIntermissionMusic);
+    Mix_FreeChunk(gSirenMusic);
+    Mix_FreeChunk(gIntermissionMusic);
     gSirenMusic = NULL;
     gIntermissionMusic = NULL;
     
     // Libera a fonte global
     TTF_CloseFont(gFont);
+    TTF_CloseFont(gDevFont);
     gFont = NULL;
+    gDevFont = NULL;
     
     // Destroi a janela
     SDL_DestroyRenderer(gRenderer);
