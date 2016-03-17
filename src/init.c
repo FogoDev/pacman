@@ -81,6 +81,9 @@ bool init()
                 Texture_object_new(&gPacmanLogoTexture);
                 Texture_object_new(&gPressEnterTextTexture);
                 
+                // Inicializa textura de novo nível
+                Texture_object_new(&gNewLevelTextTexture);
+                
                 // Inicializa os temporizadores
                 Time_object_new(&fpsTimer);
                 Time_object_new(&capTimer);

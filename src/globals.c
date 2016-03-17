@@ -12,12 +12,9 @@ TTF_Font *gFont = NULL;
 // Fonte usada na tela inicial
 TTF_Font *gDevFont = NULL;
 
-// Objetos de textura e de botões
-//SDL_Rect gSpriteClips[ BUTTON_SPRITE_TOTAL ];
-//Button_object gButtons[TOTAL_BUTTONS];
+// Objetos de textura
 Texture_object gPacmanTexture;
 SDL_Rect gPacmanSpriteClips[PACMAN_WALKING_SPRITES];
-int pacmanFrame = 0;
 
 Texture_object gScoreTextTexture;
 Texture_object gPointsTextTexture;
@@ -65,3 +62,13 @@ Texture_object gDevTextTexture;
 // Texturas da Tela inicial
 Texture_object gPacmanLogoTexture;
 Texture_object gPressEnterTextTexture;
+
+// Quantidade total de pills e powerups no mapa
+int gTotalPills;
+
+// Nível do jogo, começando do 1;
+int gLevel = 1;
+
+// Textura de novo nível
+Texture_object gNewLevelTextTexture;
+

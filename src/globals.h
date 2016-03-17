@@ -78,4 +78,14 @@ extern Texture_object gDevTextTexture;
 extern Texture_object gPacmanLogoTexture;
 extern Texture_object gPressEnterTextTexture;
 
+// Quantidade total de pills e powerups no mapa
+extern int gTotalPills;
+
+// Nível do jogo, começando do 1;
+extern int gLevel;
+
+// Textura de novo nível
+extern Texture_object gNewLevelTextTexture;
+
+
 #endif

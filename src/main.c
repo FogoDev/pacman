@@ -56,6 +56,10 @@ int main (int argc, char **argv)
             bool gameStarted = false;
             int lives = 3;
             uint8_t devTextAlpha = 255;
+            int pacmanFrame = 0;
+            int pillsLeft = gTotalPills;
+            bool firstLevel = true;
+            int gotLive = 1;
             
             // Seta a cor do texto
 			SDL_Color textColor = { 0xFF, 0xFF, 0xFF, 0xFF };
@@ -245,7 +249,14 @@ int main (int argc, char **argv)
                     //     }
                     // }
                 }
-                          
+                
+                // Aumenta uma vida pro pacman a cada 5000 pontos
+                if(gScore / (5000 * gotLive)){
+                    Mix_PlayChannel(-1, gExtraLiveSoundEffect, 0);
+                    gotLive++;
+                    lives++;
+                }
+                
                 
                 // Calcula e corrige o FPS
                 float avgFPS = countedFrames / (fpsTimer.getTicks(&fpsTimer) / 1000.0);
@@ -257,7 +268,7 @@ int main (int argc, char **argv)
                 int lastX = gPacman.mPosX;
                 int lastY = gPacman.mPosY;
 
-                // Move o ponto
+                // Move o ponto tocando a música e comendo as pills
                 gPacman.move(&gPacman, tileSet);
                 for (int i = 0; i < TOTAL_TILES; i++){
                     if(eatPill(gPacman.mCollider, tileSet[i]->mBox)){
@@ -271,11 +282,13 @@ int main (int argc, char **argv)
                         
                         if(tileSet[i]->mType == 1){
                             gScore += 10;
+                            tileSet[i]->mRestore = 1;
+                            pillsLeft--;
                         } else if(tileSet[i]->mType == 2){
                             gScore += 100;
-                        }
-                        
-                        
+                            tileSet[i]->mRestore = 2;
+                            pillsLeft--;
+                        }                    
                         tileSet[i]->mType = 0;
                     }
                 }
@@ -314,37 +327,90 @@ int main (int argc, char **argv)
                 SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 0xFF);
                 SDL_RenderClear(gRenderer);
                 
+                if(!pillsLeft){
+                    
+                    // Para todas as músicas
+                    Mix_HaltChannel(-1);
+                    
+                    // Toca a música de passagem de nível
+                    Mix_PlayChannel(-1, gIntermissionMusic, 0);
+                    
+                    // Aumenta o contador de níveis
+                    gLevel++;
+                    
+                    // Renderiza o novo nível na tela
+                    char newLvlbuffer[15];
+                    memset(newLvlbuffer, '\0', sizeof(char) * 15);
+                    sprintf(newLvlbuffer, "Nivel %d", gLevel);
+                    gNewLevelTextTexture.loadFromRenderedText(&gNewLevelTextTexture, newLvlbuffer, textColor, gRenderer, gFont);
+                    gNewLevelTextTexture.render(&gNewLevelTextTexture, (SCREEN_WIDTH - gNewLevelTextTexture.mWidth) / 2, SCREEN_HEIGHT / 2, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
+                    SDL_RenderPresent(gRenderer);
+                    
+                    // Realoca todos as pills e powerups comidos
+                    for(int i = 0; i < TOTAL_TILES; i++){
+                        if(tileSet[i]->mRestore == 1){
+                            tileSet[i]->mRestore = 0;
+                            tileSet[i]->mType = 1;
+                        }
+                        
+                        if(tileSet[i]->mRestore == 2){
+                            tileSet[i]->mRestore = 0;
+                            tileSet[i]->mType = 2;
+                        }
+                    }
+                    
+                    // Coloca o pacman na posição inicial;
+                    gPacman.mPosX = 32;
+                    gPacman.mPosY = 400;
+                    
+                    
+                    // Reinicia a contagem de pillsLeft
+                    pillsLeft = gTotalPills;
+                    
+                    // Aguarda 4 segundos antes de começar o próximo nível
+                    SDL_Delay(4000);                    
+                }
+                
                 
                 if(gameStarted){
-                    if(!Mix_Playing(3) && !Mix_Playing(0)) Mix_PlayChannel(3, gSirenMusic, -1);
-                    // Renderiza o mapa
-                    for(int i = 0; i < TOTAL_TILES; i++){
-                        gTileTexture.render(&gTileTexture, tileSet[i]->mBox.x, tileSet[i]->mBox.y, gRenderer, &(gTileClips[tileSet[i]->mType]), 0.0, NULL, SDL_FLIP_NONE);
-                        // tileSet[i]->render(tileSet[i], &gTileTexture, gRenderer, gTileClips);
+                    if(firstLevel) {
+                        gNewLevelTextTexture.render(&gNewLevelTextTexture, (SCREEN_WIDTH - gNewLevelTextTexture.mWidth) / 2, SCREEN_HEIGHT / 2, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
+                        firstLevel = false;
+                        SDL_RenderPresent(gRenderer);
+                        SDL_Delay(4000);
+                    } else {
+                        
+                        if(!Mix_Playing(3) && !Mix_Playing(0)) Mix_PlayChannel(3, gSirenMusic, -1);
+                        // Renderiza o mapa
+                        for(int i = 0; i < TOTAL_TILES; i++){
+                            gTileTexture.render(&gTileTexture, tileSet[i]->mBox.x, tileSet[i]->mBox.y, gRenderer, &(gTileClips[tileSet[i]->mType]), 0.0, NULL, SDL_FLIP_NONE);
+                            // tileSet[i]->render(tileSet[i], &gTileTexture, gRenderer, gTileClips);
+                        }
+                        
+                        // Renderiza o pacman
+                        SDL_Rect *currentPacmanClip = &gPacmanSpriteClips[pacmanFrame / PACMAN_WALKING_SPRITES];
+                        gPacman.render(&gPacman, &gPacmanTexture, gRenderer, currentPacmanClip, gPacman.mDirection);
+                        
+                                    
+                        // Renderiza as texturas de texto
+                        gScoreTextTexture.render(&gScoreTextTexture, TILE_WIDTH / 2, TILE_HEIGHT / 2, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
+                        
+                        memset(scoreBuffer, '\0', sizeof(char) * 21);       
+                        sprintf(scoreBuffer, "%llu", gScore);
+                        gPointsTextTexture.loadFromRenderedText(&gPointsTextTexture, scoreBuffer, textColor, gRenderer, gFont);
+                        
+                        gPointsTextTexture.render(&gPointsTextTexture, gScoreTextTexture.mWidth + TILE_WIDTH , TILE_HEIGHT / 2, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
+                        
+                        gLivesTextTexture.render(&gLivesTextTexture, TILE_WIDTH / 2, SCREEN_HEIGHT - (7* TILE_HEIGHT) /6, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
+                        for(int i = 0; i < lives; i++){
+                            gPacmanTexture.render(&gPacmanTexture, TILE_WIDTH + gLivesTextTexture.mWidth + ((5 * TILE_WIDTH / 4) * i), SCREEN_HEIGHT -  TILE_HEIGHT -2, gRenderer, &gPacmanSpriteClips[2], 0.0, NULL, SDL_FLIP_NONE);
+                        }
+                        
+                        // for(int i = 0; i < TOTAL_DATA; i++){
+                        //     gDataTexture[i].render(&gDataTexture[i], (SCREEN_WIDTH - gDataTexture[i].mWidth) / 2, gScoreTextTexture.mHeight + gDataTexture[0].mHeight * i, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
+                        // }
                     }
                     
-                    // Renderiza o pacman
-                    SDL_Rect *currentPacmanClip = &gPacmanSpriteClips[pacmanFrame / PACMAN_WALKING_SPRITES];
-                    gPacman.render(&gPacman, &gPacmanTexture, gRenderer, currentPacmanClip, gPacman.mDirection);
-                    
-                                
-                    // Renderiza as texturas de texto
-                    gScoreTextTexture.render(&gScoreTextTexture, TILE_WIDTH / 2, TILE_HEIGHT / 2, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
-                    
-                    memset(scoreBuffer, '\0', sizeof(char) * 21);       
-                    sprintf(scoreBuffer, "%llu", gScore);
-                    gPointsTextTexture.loadFromRenderedText(&gPointsTextTexture, scoreBuffer, textColor, gRenderer, gFont);
-                    
-                    gPointsTextTexture.render(&gPointsTextTexture, gScoreTextTexture.mWidth + TILE_WIDTH , TILE_HEIGHT / 2, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
-                    
-                    gLivesTextTexture.render(&gLivesTextTexture, TILE_WIDTH / 2, SCREEN_HEIGHT - (7* TILE_HEIGHT) /6, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
-                    for(int i = 0; i < lives; i++){
-                        gPacmanTexture.render(&gPacmanTexture, TILE_WIDTH + gLivesTextTexture.mWidth + ((5 * TILE_WIDTH / 4) * i), SCREEN_HEIGHT -  TILE_HEIGHT -2, gRenderer, &gPacmanSpriteClips[2], 0.0, NULL, SDL_FLIP_NONE);
-                    }
-                    
-                    // for(int i = 0; i < TOTAL_DATA; i++){
-                    //     gDataTexture[i].render(&gDataTexture[i], (SCREEN_WIDTH - gDataTexture[i].mWidth) / 2, gScoreTextTexture.mHeight + gDataTexture[0].mHeight * i, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
-                    // }
                 
                 } else {
                     if(!Mix_Playing(2)) Mix_PlayChannel(2, gIntermissionMusic, -1);

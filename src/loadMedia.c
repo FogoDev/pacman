@@ -25,6 +25,11 @@ bool loadMedia(Tile_object *tiles[], SDL_Rect *gTileClips)
             printf("Falha ao renderizar a textura do texto da pontuação!\n");
             success = false;
         }
+        
+        if(!gNewLevelTextTexture.loadFromRenderedText(&gNewLevelTextTexture, "Nivel 1", textColor, gRenderer, gFont)){
+            printf("Falha ao renderizar a textura do texto de nível 1!\n");
+            success = false;
+        }
     }
     
     gDevFont = TTF_OpenFont("../res/fonts/emulogic.ttf", 22);
@@ -151,7 +156,8 @@ bool loadMedia(Tile_object *tiles[], SDL_Rect *gTileClips)
     }
     
     // Carrega o mapa de tiles
-    if(!setTiles(tiles, gTileClips)){
+    gTotalPills = setTiles(tiles, gTileClips);
+    if(!gTotalPills){
         printf("Falha ao carregar o mapa de tiles!\n");
         success = false;
     }

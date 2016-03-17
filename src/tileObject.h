@@ -30,6 +30,6 @@ void Tile_object_render(void *self, Texture_object *texture, SDL_Renderer *gRend
 Tile_object* Tile_object_new(Tile_object *tile, int x, int y, int tileType);
 
 // Inicializa os tiles no mapa
-bool setTiles(Tile_object *tiles[], SDL_Rect *gTileClips);
+int setTiles(Tile_object *tiles[], SDL_Rect *gTileClips);
 
 #endif

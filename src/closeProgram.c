@@ -35,6 +35,7 @@ void closeProgram(Tile_object *tiles[])
     gDevTextTexture.textureFree(&gDevTextTexture);
     gPacmanLogoTexture.textureFree(&gPacmanLogoTexture);
     gPressEnterTextTexture.textureFree(&gPressEnterTextTexture);
+    gNewLevelTextTexture.textureFree(&gNewLevelTextTexture);
     
     // for(int i = 0; i < TOTAL_DATA; i++){
     //    gDataTexture[i].textureFree(&gDataTexture[i]);

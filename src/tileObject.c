@@ -26,17 +26,18 @@ Tile_object* Tile_object_new(Tile_object *tile, int x, int y, int tileType)
     
     // Atribui o tipo de tile
     tile->mType = tileType;
-    tile->mRestore = 0;
+    if(tile->mType == 1 || tile->mType == 2) tile->mRestore = 0;
+    else tile->mRestore = 5;
     
     return tile;
 }
 
 
 // Inicializa os tijolos no mapa
-bool setTiles(Tile_object *tiles[], SDL_Rect *gTileClips)
+int setTiles(Tile_object *tiles[], SDL_Rect *gTileClips)
 {
     // Flag de sucesso
-    bool tilesLoaded = true;
+    int tilesLoaded = 0;
     
     // As posições dos tiles
     int x = 0, y = 0;
@@ -65,6 +66,7 @@ bool setTiles(Tile_object *tiles[], SDL_Rect *gTileClips)
                         
             // Verifica se o número é válido
             if((tileType >= 0) && (tileType < TOTAL_TILE_SPRITES)){
+                if(tileType == 1 || tileType == 2) tilesLoaded++;
                 tiles[i] = Tile_object_new(tiles[i], x, y, tileType);
             }
             
