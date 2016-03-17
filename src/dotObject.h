@@ -39,8 +39,11 @@ typedef struct _Dot_object {
     // A direção que o ponto está andando
     int mDirection;
     
-    // Determina se o ponto é um fantasma
+    
+    // Atributos exclusivos de fantasma
     bool mGhost;
+    bool mVulnerable;
+    bool mDead;
     
     // Collision circle do ponto
     Circle mCollider;

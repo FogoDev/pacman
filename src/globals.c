@@ -26,6 +26,26 @@ Dot_object gPacman;
 
 //////////////////////////// FANTASMAS /////////////////////////
 
+// Fantasma vermelho
+Texture_object gBlinkyTexture;
+SDL_Rect gBlinkySpriteClips[GHOST_DIRECTION_TOTAL][GHOSTS_WALKING_SPRITES];
+Dot_object gBlinky;
+
+// Fantasma rosa
+Texture_object gPinkyTexture;
+SDL_Rect gPinkySpriteClips[GHOST_DIRECTION_TOTAL][GHOSTS_WALKING_SPRITES];
+Dot_object gPinky;
+
+// Fantasma azul
+Texture_object gInkyTexture;
+SDL_Rect gInkySpriteClips[GHOST_DIRECTION_TOTAL][GHOSTS_WALKING_SPRITES];
+Dot_object gInky;
+
+// Fantasma laranja
+Texture_object gClydeTexture;
+SDL_Rect gClydeSpriteClips[GHOST_DIRECTION_TOTAL][GHOSTS_WALKING_SPRITES];
+Dot_object gClyde;
+
 ////////////////////////////////////////////////////////////////
 
 //////////////////////////// MAPA //////////////////////////////

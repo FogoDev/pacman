@@ -6,7 +6,8 @@
 #define SCREEN_HEIGHT 800
 #define SCREEN_FPS 60
 #define SCREEN_TICKS_PER_FRAME 1000 / SCREEN_FPS
-
+#define SECONDSCOUNTER 1000.0
+#define MAX_AVGFPS 2000000
 
 typedef short int bool;
 
@@ -20,6 +21,19 @@ typedef struct _Circle{
 
 // Dados do arquivo de pontuação
 #define TOTAL_DATA 10
+
+// Vidas iniciais do pacman
+#define STARTER_LIVES 3
+
+// Define o tempo que a tela de troca de nível vai ficar na dela
+#define NEWLVLPRESENTATION 4000
+
+// Constante pra definir a pontuação pra conseguir vida extra
+#define EXTRA_LIVE_SCORE 5000
+
+// Quantidade de pontos dados ao comer pill e powerups
+#define PILLSCORE 10
+#define POWERUPSCORE 100
 
 // Constantes do mapa
 #define TILE_WIDTH 32
@@ -62,17 +76,52 @@ enum _Tiles
 // Constantes de sprites do Pacman
 #define PACMAN_WALKING_SPRITES 4
 #define PACMAN_DEATH_SPRITES 12
+enum _PACMAN_DIRECTION
+{
+    PACMAN_RIGHT = 0,
+    PACMAN_LEFT = 180,
+    PACMAN_DOWN = 90,
+    PACMAN_UP = 270
+};
 
 // Constantes dos sprites dos fantasmas
 #define GHOSTS_WALKING_SPRITES 2
-
+#define GHOST_VULNERABLE_SPRITES 4
+#define GHOST_DEAD_EFFECT 1
 enum _GHOST_DIRECTION
 {
     GHOST_DOWN,
-    GHOST_TOP,
+    GHOST_DEAD_DOWN,
+    GHOST_UP,
+    GHOST_DEAD_UP,
     GHOST_LEFT,
-    GHOST_RIGHT
+    GHOST_DEAD_LEFT,
+    GHOST_RIGHT,
+    GHOST_DEAD_RIGHT,
+    GHOST_VULNERABLE,
+    GHOST_DIRECTION_TOTAL
 };
 
+// Constantes pra lidar com o SDL_MIX
+enum _SOUND_CHANNELS
+{
+    ANY_CHANNEL = -1,
+    CHANNEL_ZERO = 0,
+    CHANNEL_ONE = 1,
+    CHANNEL_TWO = 2,
+    CHANNEL_THREE = 3,
+    CHANNEL_FOUR = 4,
+    CHANNEL_FIVE = 5,
+    CHANNEL_SIX = 6,
+    CHANNEL_SEVEN = 7
+};
+
+enum _SOUND_LOOP 
+{
+    CONTINUOUS_LOOP = -1,
+    ONE_TIME = 0,
+    LOOP_ONCE = 1,
+    LOOP_TWICE = 2,
+};
 
 #endif

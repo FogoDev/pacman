@@ -63,11 +63,9 @@ bool init()
                 //     Texture_object_new(&gDataTexture[i]);
                 // }
                 
+                
                 // Inicializa textura dos tiles
                 Texture_object_new(&gTileTexture);
-
-                // Inicializa textura do pacman
-                Texture_object_new(&gPacmanTexture);
 
                 // Inicializa texturas de texto do jogo
                 Texture_object_new(&gScoreTextTexture);
@@ -88,8 +86,24 @@ bool init()
                 Time_object_new(&fpsTimer);
                 Time_object_new(&capTimer);
                 
+                
                 // Inicializa o pacman
                 Dot_object_new(&gPacman, 32, 368, false);
+                
+                // Inicializa textura do pacman
+                Texture_object_new(&gPacmanTexture);
+                
+                //Inicializa os fantasmas
+                Dot_object_new(&gBlinky, 224, 368, true);
+                Dot_object_new(&gPinky, 256, 368, true);
+                Dot_object_new(&gInky, 288, 368, true);
+                Dot_object_new(&gClyde, 320, 368, true);
+                
+                // Inicializa as texturas dos fantasmas
+                Texture_object_new(&gBlinkyTexture);
+                Texture_object_new(&gPinkyTexture);
+                Texture_object_new(&gInkyTexture);
+                Texture_object_new(&gClydeTexture);
                    
             }
         }

@@ -124,6 +124,7 @@ void Dot_object_new(Dot_object *dot, int x, int y, bool ghost)
     // Inicia o raio de colisão do ponto
     dot->mCollider.r = dot->DOT_WIDTH / 2;
     
+    // A direção que o ponto está andando
     dot->mDirection = 0;
     
     // Inicia os atributos do ponto
@@ -131,7 +132,11 @@ void Dot_object_new(Dot_object *dot, int x, int y, bool ghost)
     dot->mPosY = y + dot->DOT_HEIGHT;
     dot->mVelX = 0;
     dot->mVelY = 0;
+    
+    // Atributos exclusivos de fantasmas
     dot->mGhost = ghost;
+    dot->mVulnerable = false;
+    dot->mDead = false;
     
     // Inicializa os colisores relativos à posição
     dot->shiftColliders(dot);

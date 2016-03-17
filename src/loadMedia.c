@@ -5,6 +5,8 @@ bool loadMedia(Tile_object *tiles[], SDL_Rect *gTileClips)
     // Inicializando a flag
     bool success = true;
     
+//////////////////////////// TEXTOS ////////////////////////////    
+    
     // Cores de renderização do texto
     SDL_Color textColor = {0xFF, 0xFF, 0xFF, 0xFF};
     
@@ -54,6 +56,7 @@ bool loadMedia(Tile_object *tiles[], SDL_Rect *gTileClips)
         success = false;
     }
     
+/////////////////////////////////////////////////////////////////  
     
     // // Abre o arquivo pra leitura binária
     // SDL_RWops *file = SDL_RWFromFile("../res/score/score.bin", "r+b");
@@ -118,14 +121,15 @@ bool loadMedia(Tile_object *tiles[], SDL_Rect *gTileClips)
 	// 	gButtons[3].setPosition(&gButtons[3], SCREEN_WIDTH - BUTTON_WIDTH, SCREEN_HEIGHT - BUTTON_HEIGHT );
     // }
     
-    
-    //Carrega a textura de dot
+//////////////////////////// PACMAN ////////////////////////////
+
+    // Carrega a textura do Pacman
     if(!gPacmanTexture.loadFromFile(&gPacmanTexture, "../res/sprites/map_sprites.png", gRenderer)){
         printf("Falha ao carregar a textura do pacman!\n");
         success = false;
     } else {
         
-        // Seta os sprite clips
+        // Seta os sprite clips do pacman
         gPacmanSpriteClips[0].x = 0;
         gPacmanSpriteClips[0].y = 192;
         gPacmanSpriteClips[0].w = TILE_WIDTH;
@@ -149,6 +153,460 @@ bool loadMedia(Tile_object *tiles[], SDL_Rect *gTileClips)
         
     }
     
+////////////////////////////////////////////////////////////////
+
+//////////////////////////// FANTASMAS /////////////////////////
+
+// Fantasma vermelho
+    
+    // Carrega a textura do fantasma vermelho
+    if(!gBlinkyTexture.loadFromFile(&gBlinkyTexture, "../res/sprites/map_sprites.png", gRenderer)){
+        printf("Falha ao carregar a textura do fantasma vermelho!\n");
+        success = false;
+    } else {
+        
+        // Seta os sprite clips do fantasma vermelho
+        gBlinkySpriteClips[GHOST_DOWN][0].x = 0;
+        gBlinkySpriteClips[GHOST_DOWN][0].y = 224;
+        gBlinkySpriteClips[GHOST_DOWN][0].w = TILE_WIDTH;
+        gBlinkySpriteClips[GHOST_DOWN][0].h = TILE_HEIGHT;
+        
+        gBlinkySpriteClips[GHOST_DOWN][1].x = 32;
+        gBlinkySpriteClips[GHOST_DOWN][1].y = 224;
+        gBlinkySpriteClips[GHOST_DOWN][1].w = TILE_WIDTH;
+        gBlinkySpriteClips[GHOST_DOWN][1].h = TILE_HEIGHT;
+        
+        gBlinkySpriteClips[GHOST_UP][0].x = 64;
+        gBlinkySpriteClips[GHOST_UP][0].y = 224;
+        gBlinkySpriteClips[GHOST_UP][0].w = TILE_WIDTH;
+        gBlinkySpriteClips[GHOST_UP][0].h = TILE_HEIGHT;
+        
+        gBlinkySpriteClips[GHOST_UP][1].x = 96;
+        gBlinkySpriteClips[GHOST_UP][1].y = 224;
+        gBlinkySpriteClips[GHOST_UP][1].w = TILE_WIDTH;
+        gBlinkySpriteClips[GHOST_UP][1].h = TILE_HEIGHT;
+        
+        gBlinkySpriteClips[GHOST_LEFT][0].x = 128;
+        gBlinkySpriteClips[GHOST_LEFT][0].y = 224;
+        gBlinkySpriteClips[GHOST_LEFT][0].w = TILE_WIDTH;
+        gBlinkySpriteClips[GHOST_LEFT][0].h = TILE_HEIGHT;
+        
+        gBlinkySpriteClips[GHOST_LEFT][1].x = 160;
+        gBlinkySpriteClips[GHOST_LEFT][1].y = 224;
+        gBlinkySpriteClips[GHOST_LEFT][1].w = TILE_WIDTH;
+        gBlinkySpriteClips[GHOST_LEFT][1].h = TILE_HEIGHT;
+        
+        gBlinkySpriteClips[GHOST_RIGHT][0].x = 192;
+        gBlinkySpriteClips[GHOST_RIGHT][0].y = 224;
+        gBlinkySpriteClips[GHOST_RIGHT][0].w = TILE_WIDTH;
+        gBlinkySpriteClips[GHOST_RIGHT][0].h = TILE_HEIGHT;
+        
+        gBlinkySpriteClips[GHOST_RIGHT][1].x = 224;
+        gBlinkySpriteClips[GHOST_RIGHT][1].y = 224;
+        gBlinkySpriteClips[GHOST_RIGHT][1].w = TILE_WIDTH;
+        gBlinkySpriteClips[GHOST_RIGHT][1].h = TILE_HEIGHT;
+        
+        gBlinkySpriteClips[GHOST_VULNERABLE][0].x = 0;
+        gBlinkySpriteClips[GHOST_VULNERABLE][0].y = 352;
+        gBlinkySpriteClips[GHOST_VULNERABLE][0].w = TILE_WIDTH;
+        gBlinkySpriteClips[GHOST_VULNERABLE][0].h = TILE_HEIGHT;
+        
+        gBlinkySpriteClips[GHOST_VULNERABLE][1].x = 96;
+        gBlinkySpriteClips[GHOST_VULNERABLE][1].y = 352;
+        gBlinkySpriteClips[GHOST_VULNERABLE][1].w = TILE_WIDTH;
+        gBlinkySpriteClips[GHOST_VULNERABLE][1].h = TILE_HEIGHT;
+        
+        gBlinkySpriteClips[GHOST_VULNERABLE][2].x = 32;
+        gBlinkySpriteClips[GHOST_VULNERABLE][2].y = 352;
+        gBlinkySpriteClips[GHOST_VULNERABLE][2].w = TILE_WIDTH;
+        gBlinkySpriteClips[GHOST_VULNERABLE][2].h = TILE_HEIGHT;
+        
+        gBlinkySpriteClips[GHOST_VULNERABLE][3].x = 64;
+        gBlinkySpriteClips[GHOST_VULNERABLE][3].y = 352;
+        gBlinkySpriteClips[GHOST_VULNERABLE][3].w = TILE_WIDTH;
+        gBlinkySpriteClips[GHOST_VULNERABLE][3].h = TILE_HEIGHT;
+        
+        gBlinkySpriteClips[GHOST_DEAD_DOWN][0].x = 128;
+        gBlinkySpriteClips[GHOST_DEAD_DOWN][0].y = 352;
+        gBlinkySpriteClips[GHOST_DEAD_DOWN][0].w = TILE_WIDTH;
+        gBlinkySpriteClips[GHOST_DEAD_DOWN][0].h = TILE_HEIGHT;
+        
+        gBlinkySpriteClips[GHOST_DEAD_DOWN][1].x = 128;
+        gBlinkySpriteClips[GHOST_DEAD_DOWN][1].y = 352;
+        gBlinkySpriteClips[GHOST_DEAD_DOWN][1].w = TILE_WIDTH;
+        gBlinkySpriteClips[GHOST_DEAD_DOWN][1].h = TILE_HEIGHT;
+        
+        gBlinkySpriteClips[GHOST_DEAD_UP][0].x = 160;
+        gBlinkySpriteClips[GHOST_DEAD_UP][0].y = 352;
+        gBlinkySpriteClips[GHOST_DEAD_UP][0].w = TILE_WIDTH;
+        gBlinkySpriteClips[GHOST_DEAD_UP][0].h = TILE_HEIGHT;
+        
+        gBlinkySpriteClips[GHOST_DEAD_UP][1].x = 160;
+        gBlinkySpriteClips[GHOST_DEAD_UP][1].y = 352;
+        gBlinkySpriteClips[GHOST_DEAD_UP][1].w = TILE_WIDTH;
+        gBlinkySpriteClips[GHOST_DEAD_UP][1].h = TILE_HEIGHT;
+        
+        gBlinkySpriteClips[GHOST_DEAD_LEFT][0].x = 192;
+        gBlinkySpriteClips[GHOST_DEAD_LEFT][0].y = 352;
+        gBlinkySpriteClips[GHOST_DEAD_LEFT][0].w = TILE_WIDTH;
+        gBlinkySpriteClips[GHOST_DEAD_LEFT][0].h = TILE_HEIGHT;
+        
+        gBlinkySpriteClips[GHOST_DEAD_LEFT][1].x = 192;
+        gBlinkySpriteClips[GHOST_DEAD_LEFT][1].y = 352;
+        gBlinkySpriteClips[GHOST_DEAD_LEFT][1].w = TILE_WIDTH;
+        gBlinkySpriteClips[GHOST_DEAD_LEFT][1].h = TILE_HEIGHT;
+        
+        gBlinkySpriteClips[GHOST_DEAD_RIGHT][0].x = 224;
+        gBlinkySpriteClips[GHOST_DEAD_RIGHT][0].y = 352;
+        gBlinkySpriteClips[GHOST_DEAD_RIGHT][0].w = TILE_WIDTH;
+        gBlinkySpriteClips[GHOST_DEAD_RIGHT][0].h = TILE_HEIGHT;
+        
+        gBlinkySpriteClips[GHOST_DEAD_RIGHT][1].x = 224;
+        gBlinkySpriteClips[GHOST_DEAD_RIGHT][1].y = 352;
+        gBlinkySpriteClips[GHOST_DEAD_RIGHT][1].w = TILE_WIDTH;
+        gBlinkySpriteClips[GHOST_DEAD_RIGHT][1].h = TILE_HEIGHT;
+        
+    }
+
+
+// Fantasma rosa
+    
+    // Carrega a textura do fantasma rosa
+    if(!gPinkyTexture.loadFromFile(&gPinkyTexture, "../res/sprites/map_sprites.png", gRenderer)){
+        printf("Falha ao carregar a textura do fantasma rosa!\n");
+        success = false;
+    } else {
+        
+        // Seta os sprite clips do fantasma rosa
+        gPinkySpriteClips[GHOST_DOWN][0].x = 0;
+        gPinkySpriteClips[GHOST_DOWN][0].y = 288;
+        gPinkySpriteClips[GHOST_DOWN][0].w = TILE_WIDTH;
+        gPinkySpriteClips[GHOST_DOWN][0].h = TILE_HEIGHT;
+        
+        gPinkySpriteClips[GHOST_DOWN][1].x = 32;
+        gPinkySpriteClips[GHOST_DOWN][1].y = 288;
+        gPinkySpriteClips[GHOST_DOWN][1].w = TILE_WIDTH;
+        gPinkySpriteClips[GHOST_DOWN][1].h = TILE_HEIGHT;
+        
+        gPinkySpriteClips[GHOST_UP][0].x = 64;
+        gPinkySpriteClips[GHOST_UP][0].y = 288;
+        gPinkySpriteClips[GHOST_UP][0].w = TILE_WIDTH;
+        gPinkySpriteClips[GHOST_UP][0].h = TILE_HEIGHT;
+        
+        gPinkySpriteClips[GHOST_UP][1].x = 96;
+        gPinkySpriteClips[GHOST_UP][1].y = 288;
+        gPinkySpriteClips[GHOST_UP][1].w = TILE_WIDTH;
+        gPinkySpriteClips[GHOST_UP][1].h = TILE_HEIGHT;
+        
+        gPinkySpriteClips[GHOST_LEFT][0].x = 128;
+        gPinkySpriteClips[GHOST_LEFT][0].y = 288;
+        gPinkySpriteClips[GHOST_LEFT][0].w = TILE_WIDTH;
+        gPinkySpriteClips[GHOST_LEFT][0].h = TILE_HEIGHT;
+        
+        gPinkySpriteClips[GHOST_LEFT][1].x = 160;
+        gPinkySpriteClips[GHOST_LEFT][1].y = 288;
+        gPinkySpriteClips[GHOST_LEFT][1].w = TILE_WIDTH;
+        gPinkySpriteClips[GHOST_LEFT][1].h = TILE_HEIGHT;
+        
+        gPinkySpriteClips[GHOST_RIGHT][0].x = 192;
+        gPinkySpriteClips[GHOST_RIGHT][0].y = 288;
+        gPinkySpriteClips[GHOST_RIGHT][0].w = TILE_WIDTH;
+        gPinkySpriteClips[GHOST_RIGHT][0].h = TILE_HEIGHT;
+        
+        gPinkySpriteClips[GHOST_RIGHT][1].x = 224;
+        gPinkySpriteClips[GHOST_RIGHT][1].y = 288;
+        gPinkySpriteClips[GHOST_RIGHT][1].w = TILE_WIDTH;
+        gPinkySpriteClips[GHOST_RIGHT][1].h = TILE_HEIGHT;
+        
+        gPinkySpriteClips[GHOST_VULNERABLE][0].x = 0;
+        gPinkySpriteClips[GHOST_VULNERABLE][0].y = 352;
+        gPinkySpriteClips[GHOST_VULNERABLE][0].w = TILE_WIDTH;
+        gPinkySpriteClips[GHOST_VULNERABLE][0].h = TILE_HEIGHT;
+        
+        gPinkySpriteClips[GHOST_VULNERABLE][1].x = 96;
+        gPinkySpriteClips[GHOST_VULNERABLE][1].y = 352;
+        gPinkySpriteClips[GHOST_VULNERABLE][1].w = TILE_WIDTH;
+        gPinkySpriteClips[GHOST_VULNERABLE][1].h = TILE_HEIGHT;
+        
+        gPinkySpriteClips[GHOST_VULNERABLE][2].x = 32;
+        gPinkySpriteClips[GHOST_VULNERABLE][2].y = 352;
+        gPinkySpriteClips[GHOST_VULNERABLE][2].w = TILE_WIDTH;
+        gPinkySpriteClips[GHOST_VULNERABLE][2].h = TILE_HEIGHT;
+        
+        gPinkySpriteClips[GHOST_VULNERABLE][3].x = 64;
+        gPinkySpriteClips[GHOST_VULNERABLE][3].y = 352;
+        gPinkySpriteClips[GHOST_VULNERABLE][3].w = TILE_WIDTH;
+        gPinkySpriteClips[GHOST_VULNERABLE][3].h = TILE_HEIGHT;
+        
+        gPinkySpriteClips[GHOST_DEAD_DOWN][0].x = 128;
+        gPinkySpriteClips[GHOST_DEAD_DOWN][0].y = 352;
+        gPinkySpriteClips[GHOST_DEAD_DOWN][0].w = TILE_WIDTH;
+        gPinkySpriteClips[GHOST_DEAD_DOWN][0].h = TILE_HEIGHT;
+        
+        gPinkySpriteClips[GHOST_DEAD_DOWN][1].x = 128;
+        gPinkySpriteClips[GHOST_DEAD_DOWN][1].y = 352;
+        gPinkySpriteClips[GHOST_DEAD_DOWN][1].w = TILE_WIDTH;
+        gPinkySpriteClips[GHOST_DEAD_DOWN][1].h = TILE_HEIGHT;
+        
+        gPinkySpriteClips[GHOST_DEAD_UP][0].x = 160;
+        gPinkySpriteClips[GHOST_DEAD_UP][0].y = 352;
+        gPinkySpriteClips[GHOST_DEAD_UP][0].w = TILE_WIDTH;
+        gPinkySpriteClips[GHOST_DEAD_UP][0].h = TILE_HEIGHT;
+        
+        gPinkySpriteClips[GHOST_DEAD_UP][1].x = 160;
+        gPinkySpriteClips[GHOST_DEAD_UP][1].y = 352;
+        gPinkySpriteClips[GHOST_DEAD_UP][1].w = TILE_WIDTH;
+        gPinkySpriteClips[GHOST_DEAD_UP][1].h = TILE_HEIGHT;
+        
+        gPinkySpriteClips[GHOST_DEAD_LEFT][0].x = 192;
+        gPinkySpriteClips[GHOST_DEAD_LEFT][0].y = 352;
+        gPinkySpriteClips[GHOST_DEAD_LEFT][0].w = TILE_WIDTH;
+        gPinkySpriteClips[GHOST_DEAD_LEFT][0].h = TILE_HEIGHT;
+        
+        gPinkySpriteClips[GHOST_DEAD_LEFT][1].x = 192;
+        gPinkySpriteClips[GHOST_DEAD_LEFT][1].y = 352;
+        gPinkySpriteClips[GHOST_DEAD_LEFT][1].w = TILE_WIDTH;
+        gPinkySpriteClips[GHOST_DEAD_LEFT][1].h = TILE_HEIGHT;
+        
+        gPinkySpriteClips[GHOST_DEAD_RIGHT][0].x = 224;
+        gPinkySpriteClips[GHOST_DEAD_RIGHT][0].y = 352;
+        gPinkySpriteClips[GHOST_DEAD_RIGHT][0].w = TILE_WIDTH;
+        gPinkySpriteClips[GHOST_DEAD_RIGHT][0].h = TILE_HEIGHT;
+        
+        gPinkySpriteClips[GHOST_DEAD_RIGHT][1].x = 224;
+        gPinkySpriteClips[GHOST_DEAD_RIGHT][1].y = 352;
+        gPinkySpriteClips[GHOST_DEAD_RIGHT][1].w = TILE_WIDTH;
+        gPinkySpriteClips[GHOST_DEAD_RIGHT][1].h = TILE_HEIGHT;
+        
+    }
+
+// Fantasma azul
+    
+    // Carrega a textura do fantasma azul
+    if(!gInkyTexture.loadFromFile(&gInkyTexture, "../res/sprites/map_sprites.png", gRenderer)){
+        printf("Falha ao carregar a textura do fantasma azul!\n");
+        success = false;
+    } else {
+        
+        // Seta os sprite clips do fantasma azul
+        gInkySpriteClips[GHOST_DOWN][0].x = 0;
+        gInkySpriteClips[GHOST_DOWN][0].y = 256;
+        gInkySpriteClips[GHOST_DOWN][0].w = TILE_WIDTH;
+        gInkySpriteClips[GHOST_DOWN][0].h = TILE_HEIGHT;
+        
+        gInkySpriteClips[GHOST_DOWN][1].x = 32;
+        gInkySpriteClips[GHOST_DOWN][1].y = 256;
+        gInkySpriteClips[GHOST_DOWN][1].w = TILE_WIDTH;
+        gInkySpriteClips[GHOST_DOWN][1].h = TILE_HEIGHT;
+        
+        gInkySpriteClips[GHOST_UP][0].x = 64;
+        gInkySpriteClips[GHOST_UP][0].y = 256;
+        gInkySpriteClips[GHOST_UP][0].w = TILE_WIDTH;
+        gInkySpriteClips[GHOST_UP][0].h = TILE_HEIGHT;
+        
+        gInkySpriteClips[GHOST_UP][1].x = 96;
+        gInkySpriteClips[GHOST_UP][1].y = 256;
+        gInkySpriteClips[GHOST_UP][1].w = TILE_WIDTH;
+        gInkySpriteClips[GHOST_UP][1].h = TILE_HEIGHT;
+        
+        gInkySpriteClips[GHOST_LEFT][0].x = 128;
+        gInkySpriteClips[GHOST_LEFT][0].y = 256;
+        gInkySpriteClips[GHOST_LEFT][0].w = TILE_WIDTH;
+        gInkySpriteClips[GHOST_LEFT][0].h = TILE_HEIGHT;
+        
+        gInkySpriteClips[GHOST_LEFT][1].x = 160;
+        gInkySpriteClips[GHOST_LEFT][1].y = 256;
+        gInkySpriteClips[GHOST_LEFT][1].w = TILE_WIDTH;
+        gInkySpriteClips[GHOST_LEFT][1].h = TILE_HEIGHT;
+        
+        gInkySpriteClips[GHOST_RIGHT][0].x = 192;
+        gInkySpriteClips[GHOST_RIGHT][0].y = 256;
+        gInkySpriteClips[GHOST_RIGHT][0].w = TILE_WIDTH;
+        gInkySpriteClips[GHOST_RIGHT][0].h = TILE_HEIGHT;
+        
+        gInkySpriteClips[GHOST_RIGHT][1].x = 224;
+        gInkySpriteClips[GHOST_RIGHT][1].y = 256;
+        gInkySpriteClips[GHOST_RIGHT][1].w = TILE_WIDTH;
+        gInkySpriteClips[GHOST_RIGHT][1].h = TILE_HEIGHT;
+        
+        gInkySpriteClips[GHOST_VULNERABLE][0].x = 0;
+        gInkySpriteClips[GHOST_VULNERABLE][0].y = 352;
+        gInkySpriteClips[GHOST_VULNERABLE][0].w = TILE_WIDTH;
+        gInkySpriteClips[GHOST_VULNERABLE][0].h = TILE_HEIGHT;
+        
+        gInkySpriteClips[GHOST_VULNERABLE][1].x = 96;
+        gInkySpriteClips[GHOST_VULNERABLE][1].y = 352;
+        gInkySpriteClips[GHOST_VULNERABLE][1].w = TILE_WIDTH;
+        gInkySpriteClips[GHOST_VULNERABLE][1].h = TILE_HEIGHT;
+        
+        gInkySpriteClips[GHOST_VULNERABLE][2].x = 32;
+        gInkySpriteClips[GHOST_VULNERABLE][2].y = 352;
+        gInkySpriteClips[GHOST_VULNERABLE][2].w = TILE_WIDTH;
+        gInkySpriteClips[GHOST_VULNERABLE][2].h = TILE_HEIGHT;
+        
+        gInkySpriteClips[GHOST_VULNERABLE][3].x = 64;
+        gInkySpriteClips[GHOST_VULNERABLE][3].y = 352;
+        gInkySpriteClips[GHOST_VULNERABLE][3].w = TILE_WIDTH;
+        gInkySpriteClips[GHOST_VULNERABLE][3].h = TILE_HEIGHT;
+        
+        gInkySpriteClips[GHOST_DEAD_DOWN][0].x = 128;
+        gInkySpriteClips[GHOST_DEAD_DOWN][0].y = 352;
+        gInkySpriteClips[GHOST_DEAD_DOWN][0].w = TILE_WIDTH;
+        gInkySpriteClips[GHOST_DEAD_DOWN][0].h = TILE_HEIGHT;
+        
+        gInkySpriteClips[GHOST_DEAD_DOWN][1].x = 128;
+        gInkySpriteClips[GHOST_DEAD_DOWN][1].y = 352;
+        gInkySpriteClips[GHOST_DEAD_DOWN][1].w = TILE_WIDTH;
+        gInkySpriteClips[GHOST_DEAD_DOWN][1].h = TILE_HEIGHT;
+        
+        gInkySpriteClips[GHOST_DEAD_UP][0].x = 160;
+        gInkySpriteClips[GHOST_DEAD_UP][0].y = 352;
+        gInkySpriteClips[GHOST_DEAD_UP][0].w = TILE_WIDTH;
+        gInkySpriteClips[GHOST_DEAD_UP][0].h = TILE_HEIGHT;
+        
+        gInkySpriteClips[GHOST_DEAD_UP][1].x = 160;
+        gInkySpriteClips[GHOST_DEAD_UP][1].y = 352;
+        gInkySpriteClips[GHOST_DEAD_UP][1].w = TILE_WIDTH;
+        gInkySpriteClips[GHOST_DEAD_UP][1].h = TILE_HEIGHT;
+        
+        gInkySpriteClips[GHOST_DEAD_LEFT][0].x = 192;
+        gInkySpriteClips[GHOST_DEAD_LEFT][0].y = 352;
+        gInkySpriteClips[GHOST_DEAD_LEFT][0].w = TILE_WIDTH;
+        gInkySpriteClips[GHOST_DEAD_LEFT][0].h = TILE_HEIGHT;
+        
+        gInkySpriteClips[GHOST_DEAD_LEFT][1].x = 192;
+        gInkySpriteClips[GHOST_DEAD_LEFT][1].y = 352;
+        gInkySpriteClips[GHOST_DEAD_LEFT][1].w = TILE_WIDTH;
+        gInkySpriteClips[GHOST_DEAD_LEFT][1].h = TILE_HEIGHT;
+        
+        gInkySpriteClips[GHOST_DEAD_RIGHT][0].x = 224;
+        gInkySpriteClips[GHOST_DEAD_RIGHT][0].y = 352;
+        gInkySpriteClips[GHOST_DEAD_RIGHT][0].w = TILE_WIDTH;
+        gInkySpriteClips[GHOST_DEAD_RIGHT][0].h = TILE_HEIGHT;
+        
+        gInkySpriteClips[GHOST_DEAD_RIGHT][1].x = 224;
+        gInkySpriteClips[GHOST_DEAD_RIGHT][1].y = 352;
+        gInkySpriteClips[GHOST_DEAD_RIGHT][1].w = TILE_WIDTH;
+        gInkySpriteClips[GHOST_DEAD_RIGHT][1].h = TILE_HEIGHT;
+        
+    }
+
+// Fantasma laranja
+    
+    // Carrega a textura do fantasma laranja
+    if(!gClydeTexture.loadFromFile(&gClydeTexture, "../res/sprites/map_sprites.png", gRenderer)){
+        printf("Falha ao carregar a textura do fantasma laranja!\n");
+        success = false;
+    } else {
+        
+        // Seta os sprite clips do fantasma laranja
+        gClydeSpriteClips[GHOST_DOWN][0].x = 0;
+        gClydeSpriteClips[GHOST_DOWN][0].y = 320;
+        gClydeSpriteClips[GHOST_DOWN][0].w = TILE_WIDTH;
+        gClydeSpriteClips[GHOST_DOWN][0].h = TILE_HEIGHT;
+        
+        gClydeSpriteClips[GHOST_DOWN][1].x = 32;
+        gClydeSpriteClips[GHOST_DOWN][1].y = 320;
+        gClydeSpriteClips[GHOST_DOWN][1].w = TILE_WIDTH;
+        gClydeSpriteClips[GHOST_DOWN][1].h = TILE_HEIGHT;
+        
+        gClydeSpriteClips[GHOST_UP][0].x = 64;
+        gClydeSpriteClips[GHOST_UP][0].y = 320;
+        gClydeSpriteClips[GHOST_UP][0].w = TILE_WIDTH;
+        gClydeSpriteClips[GHOST_UP][0].h = TILE_HEIGHT;
+        
+        gClydeSpriteClips[GHOST_UP][1].x = 96;
+        gClydeSpriteClips[GHOST_UP][1].y = 320;
+        gClydeSpriteClips[GHOST_UP][1].w = TILE_WIDTH;
+        gClydeSpriteClips[GHOST_UP][1].h = TILE_HEIGHT;
+        
+        gClydeSpriteClips[GHOST_LEFT][0].x = 128;
+        gClydeSpriteClips[GHOST_LEFT][0].y = 320;
+        gClydeSpriteClips[GHOST_LEFT][0].w = TILE_WIDTH;
+        gClydeSpriteClips[GHOST_LEFT][0].h = TILE_HEIGHT;
+        
+        gClydeSpriteClips[GHOST_LEFT][1].x = 160;
+        gClydeSpriteClips[GHOST_LEFT][1].y = 320;
+        gClydeSpriteClips[GHOST_LEFT][1].w = TILE_WIDTH;
+        gClydeSpriteClips[GHOST_LEFT][1].h = TILE_HEIGHT;
+        
+        gClydeSpriteClips[GHOST_RIGHT][0].x = 192;
+        gClydeSpriteClips[GHOST_RIGHT][0].y = 320;
+        gClydeSpriteClips[GHOST_RIGHT][0].w = TILE_WIDTH;
+        gClydeSpriteClips[GHOST_RIGHT][0].h = TILE_HEIGHT;
+        
+        gClydeSpriteClips[GHOST_RIGHT][1].x = 224;
+        gClydeSpriteClips[GHOST_RIGHT][1].y = 320;
+        gClydeSpriteClips[GHOST_RIGHT][1].w = TILE_WIDTH;
+        gClydeSpriteClips[GHOST_RIGHT][1].h = TILE_HEIGHT;
+        
+        gClydeSpriteClips[GHOST_VULNERABLE][0].x = 0;
+        gClydeSpriteClips[GHOST_VULNERABLE][0].y = 352;
+        gClydeSpriteClips[GHOST_VULNERABLE][0].w = TILE_WIDTH;
+        gClydeSpriteClips[GHOST_VULNERABLE][0].h = TILE_HEIGHT;
+        
+        gClydeSpriteClips[GHOST_VULNERABLE][1].x = 96;
+        gClydeSpriteClips[GHOST_VULNERABLE][1].y = 352;
+        gClydeSpriteClips[GHOST_VULNERABLE][1].w = TILE_WIDTH;
+        gClydeSpriteClips[GHOST_VULNERABLE][1].h = TILE_HEIGHT;
+        
+        gClydeSpriteClips[GHOST_VULNERABLE][2].x = 32;
+        gClydeSpriteClips[GHOST_VULNERABLE][2].y = 352;
+        gClydeSpriteClips[GHOST_VULNERABLE][2].w = TILE_WIDTH;
+        gClydeSpriteClips[GHOST_VULNERABLE][2].h = TILE_HEIGHT;
+        
+        gClydeSpriteClips[GHOST_VULNERABLE][3].x = 64;
+        gClydeSpriteClips[GHOST_VULNERABLE][3].y = 352;
+        gClydeSpriteClips[GHOST_VULNERABLE][3].w = TILE_WIDTH;
+        gClydeSpriteClips[GHOST_VULNERABLE][3].h = TILE_HEIGHT;
+        
+        gClydeSpriteClips[GHOST_DEAD_DOWN][0].x = 128;
+        gClydeSpriteClips[GHOST_DEAD_DOWN][0].y = 352;
+        gClydeSpriteClips[GHOST_DEAD_DOWN][0].w = TILE_WIDTH;
+        gClydeSpriteClips[GHOST_DEAD_DOWN][0].h = TILE_HEIGHT;
+        
+        gClydeSpriteClips[GHOST_DEAD_DOWN][1].x = 128;
+        gClydeSpriteClips[GHOST_DEAD_DOWN][1].y = 352;
+        gClydeSpriteClips[GHOST_DEAD_DOWN][1].w = TILE_WIDTH;
+        gClydeSpriteClips[GHOST_DEAD_DOWN][1].h = TILE_HEIGHT;
+        
+        gClydeSpriteClips[GHOST_DEAD_UP][0].x = 160;
+        gClydeSpriteClips[GHOST_DEAD_UP][0].y = 352;
+        gClydeSpriteClips[GHOST_DEAD_UP][0].w = TILE_WIDTH;
+        gClydeSpriteClips[GHOST_DEAD_UP][0].h = TILE_HEIGHT;
+        
+        gClydeSpriteClips[GHOST_DEAD_UP][1].x = 160;
+        gClydeSpriteClips[GHOST_DEAD_UP][1].y = 352;
+        gClydeSpriteClips[GHOST_DEAD_UP][1].w = TILE_WIDTH;
+        gClydeSpriteClips[GHOST_DEAD_UP][1].h = TILE_HEIGHT;
+        
+        gClydeSpriteClips[GHOST_DEAD_LEFT][0].x = 192;
+        gClydeSpriteClips[GHOST_DEAD_LEFT][0].y = 352;
+        gClydeSpriteClips[GHOST_DEAD_LEFT][0].w = TILE_WIDTH;
+        gClydeSpriteClips[GHOST_DEAD_LEFT][0].h = TILE_HEIGHT;
+        
+        gClydeSpriteClips[GHOST_DEAD_LEFT][1].x = 192;
+        gClydeSpriteClips[GHOST_DEAD_LEFT][1].y = 352;
+        gClydeSpriteClips[GHOST_DEAD_LEFT][1].w = TILE_WIDTH;
+        gClydeSpriteClips[GHOST_DEAD_LEFT][1].h = TILE_HEIGHT;
+        
+        gClydeSpriteClips[GHOST_DEAD_RIGHT][0].x = 224;
+        gClydeSpriteClips[GHOST_DEAD_RIGHT][0].y = 352;
+        gClydeSpriteClips[GHOST_DEAD_RIGHT][0].w = TILE_WIDTH;
+        gClydeSpriteClips[GHOST_DEAD_RIGHT][0].h = TILE_HEIGHT;
+        
+        gClydeSpriteClips[GHOST_DEAD_RIGHT][1].x = 224;
+        gClydeSpriteClips[GHOST_DEAD_RIGHT][1].y = 352;
+        gClydeSpriteClips[GHOST_DEAD_RIGHT][1].w = TILE_WIDTH;
+        gClydeSpriteClips[GHOST_DEAD_RIGHT][1].h = TILE_HEIGHT;
+        
+    }
+
+
+////////////////////////////////////////////////////////////////
+
+//////////////////////////// TILES /////////////////////////////
+
     // Carrega a textura dos tiles
     if(!gTileTexture.loadFromFile(&gTileTexture, "../res/sprites/map_sprites.png", gRenderer)){
         printf("Falha ao carregar a textura dos tiles!\n");
@@ -161,7 +619,11 @@ bool loadMedia(Tile_object *tiles[], SDL_Rect *gTileClips)
         printf("Falha ao carregar o mapa de tiles!\n");
         success = false;
     }
-    
+
+////////////////////////////////////////////////////////////////
+
+//////////////////////////// MUSICAS ///////////////////////////
+
     // Carrega música siren
     gSirenMusic = Mix_LoadWAV("../res/sound/music/siren.ogg");
     if(gSirenMusic == NULL){
@@ -213,6 +675,8 @@ bool loadMedia(Tile_object *tiles[], SDL_Rect *gTileClips)
         printf("Falha ao carregar o efeito sonoro waka_waka! SDL_mixer Error: %s\n", Mix_GetError());
         success = false;
     }
-    
+
+//////////////////////////////////////////////////////////////
+
     return success;
 }

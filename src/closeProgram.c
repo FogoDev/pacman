@@ -36,6 +36,10 @@ void closeProgram(Tile_object *tiles[])
     gPacmanLogoTexture.textureFree(&gPacmanLogoTexture);
     gPressEnterTextTexture.textureFree(&gPressEnterTextTexture);
     gNewLevelTextTexture.textureFree(&gNewLevelTextTexture);
+    gBlinkyTexture.textureFree(&gBlinkyTexture);
+    gPinkyTexture.textureFree(&gPinkyTexture);
+    gInkyTexture.textureFree(&gInkyTexture);
+    gClydeTexture.textureFree(&gClydeTexture);
     
     // for(int i = 0; i < TOTAL_DATA; i++){
     //    gDataTexture[i].textureFree(&gDataTexture[i]);
