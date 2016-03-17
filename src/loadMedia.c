@@ -206,26 +206,6 @@ bool loadMedia(Tile_object *tiles[], SDL_Rect *gTileClips)
         gBlinkySpriteClips[GHOST_RIGHT][1].w = TILE_WIDTH;
         gBlinkySpriteClips[GHOST_RIGHT][1].h = TILE_HEIGHT;
         
-        gBlinkySpriteClips[GHOST_VULNERABLE][0].x = 0;
-        gBlinkySpriteClips[GHOST_VULNERABLE][0].y = 352;
-        gBlinkySpriteClips[GHOST_VULNERABLE][0].w = TILE_WIDTH;
-        gBlinkySpriteClips[GHOST_VULNERABLE][0].h = TILE_HEIGHT;
-        
-        gBlinkySpriteClips[GHOST_VULNERABLE][1].x = 96;
-        gBlinkySpriteClips[GHOST_VULNERABLE][1].y = 352;
-        gBlinkySpriteClips[GHOST_VULNERABLE][1].w = TILE_WIDTH;
-        gBlinkySpriteClips[GHOST_VULNERABLE][1].h = TILE_HEIGHT;
-        
-        gBlinkySpriteClips[GHOST_VULNERABLE][2].x = 32;
-        gBlinkySpriteClips[GHOST_VULNERABLE][2].y = 352;
-        gBlinkySpriteClips[GHOST_VULNERABLE][2].w = TILE_WIDTH;
-        gBlinkySpriteClips[GHOST_VULNERABLE][2].h = TILE_HEIGHT;
-        
-        gBlinkySpriteClips[GHOST_VULNERABLE][3].x = 64;
-        gBlinkySpriteClips[GHOST_VULNERABLE][3].y = 352;
-        gBlinkySpriteClips[GHOST_VULNERABLE][3].w = TILE_WIDTH;
-        gBlinkySpriteClips[GHOST_VULNERABLE][3].h = TILE_HEIGHT;
-        
         gBlinkySpriteClips[GHOST_DEAD_DOWN][0].x = 128;
         gBlinkySpriteClips[GHOST_DEAD_DOWN][0].y = 352;
         gBlinkySpriteClips[GHOST_DEAD_DOWN][0].w = TILE_WIDTH;
@@ -266,6 +246,25 @@ bool loadMedia(Tile_object *tiles[], SDL_Rect *gTileClips)
         gBlinkySpriteClips[GHOST_DEAD_RIGHT][1].w = TILE_WIDTH;
         gBlinkySpriteClips[GHOST_DEAD_RIGHT][1].h = TILE_HEIGHT;
         
+        gGhostVulnerableSpriteClips[0].x = 0;
+        gGhostVulnerableSpriteClips[0].y = 352;
+        gGhostVulnerableSpriteClips[0].w = TILE_WIDTH;
+        gGhostVulnerableSpriteClips[0].h = TILE_HEIGHT;
+        
+        gGhostVulnerableSpriteClips[1].x = 96;
+        gGhostVulnerableSpriteClips[1].y = 352;
+        gGhostVulnerableSpriteClips[1].w = TILE_WIDTH;
+        gGhostVulnerableSpriteClips[1].h = TILE_HEIGHT;
+        
+        gGhostVulnerableSpriteClips[2].x = 32;
+        gGhostVulnerableSpriteClips[2].y = 352;
+        gGhostVulnerableSpriteClips[2].w = TILE_WIDTH;
+        gGhostVulnerableSpriteClips[2].h = TILE_HEIGHT;
+        
+        gGhostVulnerableSpriteClips[3].x = 64;
+        gGhostVulnerableSpriteClips[3].y = 352;
+        gGhostVulnerableSpriteClips[3].w = TILE_WIDTH;
+        gGhostVulnerableSpriteClips[3].h = TILE_HEIGHT;
     }
 
 
@@ -317,26 +316,6 @@ bool loadMedia(Tile_object *tiles[], SDL_Rect *gTileClips)
         gPinkySpriteClips[GHOST_RIGHT][1].y = 288;
         gPinkySpriteClips[GHOST_RIGHT][1].w = TILE_WIDTH;
         gPinkySpriteClips[GHOST_RIGHT][1].h = TILE_HEIGHT;
-        
-        gPinkySpriteClips[GHOST_VULNERABLE][0].x = 0;
-        gPinkySpriteClips[GHOST_VULNERABLE][0].y = 352;
-        gPinkySpriteClips[GHOST_VULNERABLE][0].w = TILE_WIDTH;
-        gPinkySpriteClips[GHOST_VULNERABLE][0].h = TILE_HEIGHT;
-        
-        gPinkySpriteClips[GHOST_VULNERABLE][1].x = 96;
-        gPinkySpriteClips[GHOST_VULNERABLE][1].y = 352;
-        gPinkySpriteClips[GHOST_VULNERABLE][1].w = TILE_WIDTH;
-        gPinkySpriteClips[GHOST_VULNERABLE][1].h = TILE_HEIGHT;
-        
-        gPinkySpriteClips[GHOST_VULNERABLE][2].x = 32;
-        gPinkySpriteClips[GHOST_VULNERABLE][2].y = 352;
-        gPinkySpriteClips[GHOST_VULNERABLE][2].w = TILE_WIDTH;
-        gPinkySpriteClips[GHOST_VULNERABLE][2].h = TILE_HEIGHT;
-        
-        gPinkySpriteClips[GHOST_VULNERABLE][3].x = 64;
-        gPinkySpriteClips[GHOST_VULNERABLE][3].y = 352;
-        gPinkySpriteClips[GHOST_VULNERABLE][3].w = TILE_WIDTH;
-        gPinkySpriteClips[GHOST_VULNERABLE][3].h = TILE_HEIGHT;
         
         gPinkySpriteClips[GHOST_DEAD_DOWN][0].x = 128;
         gPinkySpriteClips[GHOST_DEAD_DOWN][0].y = 352;
@@ -429,26 +408,6 @@ bool loadMedia(Tile_object *tiles[], SDL_Rect *gTileClips)
         gInkySpriteClips[GHOST_RIGHT][1].w = TILE_WIDTH;
         gInkySpriteClips[GHOST_RIGHT][1].h = TILE_HEIGHT;
         
-        gInkySpriteClips[GHOST_VULNERABLE][0].x = 0;
-        gInkySpriteClips[GHOST_VULNERABLE][0].y = 352;
-        gInkySpriteClips[GHOST_VULNERABLE][0].w = TILE_WIDTH;
-        gInkySpriteClips[GHOST_VULNERABLE][0].h = TILE_HEIGHT;
-        
-        gInkySpriteClips[GHOST_VULNERABLE][1].x = 96;
-        gInkySpriteClips[GHOST_VULNERABLE][1].y = 352;
-        gInkySpriteClips[GHOST_VULNERABLE][1].w = TILE_WIDTH;
-        gInkySpriteClips[GHOST_VULNERABLE][1].h = TILE_HEIGHT;
-        
-        gInkySpriteClips[GHOST_VULNERABLE][2].x = 32;
-        gInkySpriteClips[GHOST_VULNERABLE][2].y = 352;
-        gInkySpriteClips[GHOST_VULNERABLE][2].w = TILE_WIDTH;
-        gInkySpriteClips[GHOST_VULNERABLE][2].h = TILE_HEIGHT;
-        
-        gInkySpriteClips[GHOST_VULNERABLE][3].x = 64;
-        gInkySpriteClips[GHOST_VULNERABLE][3].y = 352;
-        gInkySpriteClips[GHOST_VULNERABLE][3].w = TILE_WIDTH;
-        gInkySpriteClips[GHOST_VULNERABLE][3].h = TILE_HEIGHT;
-        
         gInkySpriteClips[GHOST_DEAD_DOWN][0].x = 128;
         gInkySpriteClips[GHOST_DEAD_DOWN][0].y = 352;
         gInkySpriteClips[GHOST_DEAD_DOWN][0].w = TILE_WIDTH;
@@ -539,26 +498,6 @@ bool loadMedia(Tile_object *tiles[], SDL_Rect *gTileClips)
         gClydeSpriteClips[GHOST_RIGHT][1].y = 320;
         gClydeSpriteClips[GHOST_RIGHT][1].w = TILE_WIDTH;
         gClydeSpriteClips[GHOST_RIGHT][1].h = TILE_HEIGHT;
-        
-        gClydeSpriteClips[GHOST_VULNERABLE][0].x = 0;
-        gClydeSpriteClips[GHOST_VULNERABLE][0].y = 352;
-        gClydeSpriteClips[GHOST_VULNERABLE][0].w = TILE_WIDTH;
-        gClydeSpriteClips[GHOST_VULNERABLE][0].h = TILE_HEIGHT;
-        
-        gClydeSpriteClips[GHOST_VULNERABLE][1].x = 96;
-        gClydeSpriteClips[GHOST_VULNERABLE][1].y = 352;
-        gClydeSpriteClips[GHOST_VULNERABLE][1].w = TILE_WIDTH;
-        gClydeSpriteClips[GHOST_VULNERABLE][1].h = TILE_HEIGHT;
-        
-        gClydeSpriteClips[GHOST_VULNERABLE][2].x = 32;
-        gClydeSpriteClips[GHOST_VULNERABLE][2].y = 352;
-        gClydeSpriteClips[GHOST_VULNERABLE][2].w = TILE_WIDTH;
-        gClydeSpriteClips[GHOST_VULNERABLE][2].h = TILE_HEIGHT;
-        
-        gClydeSpriteClips[GHOST_VULNERABLE][3].x = 64;
-        gClydeSpriteClips[GHOST_VULNERABLE][3].y = 352;
-        gClydeSpriteClips[GHOST_VULNERABLE][3].w = TILE_WIDTH;
-        gClydeSpriteClips[GHOST_VULNERABLE][3].h = TILE_HEIGHT;
         
         gClydeSpriteClips[GHOST_DEAD_DOWN][0].x = 128;
         gClydeSpriteClips[GHOST_DEAD_DOWN][0].y = 352;

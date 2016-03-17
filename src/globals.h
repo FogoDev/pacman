@@ -56,6 +56,9 @@ extern Texture_object gClydeTexture;
 extern SDL_Rect gClydeSpriteClips[GHOST_DIRECTION_TOTAL][GHOSTS_WALKING_SPRITES];
 extern Dot_object gClyde;
 
+// Sprite clips pros fantasmas quando vulneráveis
+extern SDL_Rect gGhostVulnerableSpriteClips[GHOST_VULNERABLE_SPRITES];
+
 ////////////////////////////////////////////////////////////////
 
 //////////////////////////// MAPA //////////////////////////////

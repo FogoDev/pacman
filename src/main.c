@@ -674,6 +674,9 @@ int main (int argc, char **argv)
                     gLevel++;
                     
                     // Renderiza o novo nível na tela
+                    // Limpa o renderizador
+                    SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 0xFF);
+                    SDL_RenderClear(gRenderer);
                     memset(newLvlbuffer, '\0', sizeof(char) * 15);
                     sprintf(newLvlbuffer, "Nivel %d", gLevel);
                     gNewLevelTextTexture.loadFromRenderedText(&gNewLevelTextTexture, newLvlbuffer, textColor, gRenderer, gFont);
