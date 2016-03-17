@@ -94,10 +94,10 @@ bool init()
                 Texture_object_new(&gPacmanTexture);
                 
                 //Inicializa os fantasmas
-                Dot_object_new(&gBlinky, 224, 368, true);
-                Dot_object_new(&gPinky, 256, 368, true);
-                Dot_object_new(&gInky, 288, 368, true);
-                Dot_object_new(&gClyde, 320, 368, true);
+                Dot_object_new(&gBlinky, 236, 368, true);
+                Dot_object_new(&gPinky, 280, 368, true);
+                Dot_object_new(&gInky, 326, 368, true);
+                Dot_object_new(&gClyde, 372, 368, true);
                 
                 // Inicializa as texturas dos fantasmas
                 Texture_object_new(&gBlinkyTexture);

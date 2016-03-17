@@ -335,6 +335,8 @@ int main (int argc, char **argv)
                         } else if(tileSet[i]->mType == TILE_POWERUP){
                             gScore += POWERUPSCORE;
                             tileSet[i]->mRestore = TILE_POWERUP;
+                            gotPowerUp = true;
+                            powerUpTimer = SDL_GetTicks();
                             pillsLeft--;
                         }                    
                         tileSet[i]->mType = TILE_PATH;
@@ -343,7 +345,7 @@ int main (int argc, char **argv)
                 
                 if(playingWaka){
                     if(stopPlayingWaka){
-                        Mix_HaltChannel(1);
+                        Mix_HaltChannel(CHANNEL_ONE);
                         playingWaka = false;    
                     } 
                     
@@ -359,6 +361,13 @@ int main (int argc, char **argv)
                     stopPlayingWaka = true;
                 }
 
+                // Desliga o power up após 5 segundos
+                if(gotPowerUp){
+                    if(SDL_GetTicks() - powerUpTimer >= 5000) {
+                        gotPowerUp = false;
+                    }
+                }
+                
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -459,6 +468,7 @@ int main (int argc, char **argv)
 |       RENDERIZA O TEXTOS "SCORE:" E "LIVES:"
 |       RENDERIZA A PONTUAÇÃO OBTIDA PELO JOGADOR
 |       RENDERIZA A QUANTIDADE DE VIDAS RESTANTES
+|       RENDERIZA OS FANTASMAS
 */
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -510,14 +520,49 @@ int main (int argc, char **argv)
                         
                         
                         
-                        // // Renderiza o fantasma vermelho
-                        // if(!gBlinky.mDead){
-                        //     if(gotPowerUp){
-                        //         gBlinky.render(&gBlinky, &gBlinkyTexture, gRenderer, &gBlinkySpriteClips[GHOST_VULNERABLE][ghostVulnerableFrame / GHOST_VULNERABLE_SPRITES], 0.0);
-                        //     } else {
-                        //         gBlinky.render(&gBlinky, &gBlinkyTexture, gRenderer, &gBlinkySpriteClips[GHOST_VULNERABLE][ghostVulnerableFrame / GHOST_VULNERABLE_SPRITES], 0.0);
-                        //     }
-                        // }
+                        // Renderiza o fantasma vermelho
+                        if(!gBlinky.mDead){
+                            if(gotPowerUp){
+                                gBlinky.render(&gBlinky, &gBlinkyTexture, gRenderer, &gGhostVulnerableSpriteClips[ghostVulnerableFrame / (GHOST_VULNERABLE_SPRITES * 2)], 0.0);
+                            } else {
+                                gBlinky.render(&gBlinky, &gBlinkyTexture, gRenderer, &gBlinkySpriteClips[gBlinky.mDirection][ghostFrame / (GHOSTS_WALKING_SPRITES * 4)], 0.0);
+                            }
+                        } else {
+                            gBlinky.render(&gBlinky, &gBlinkyTexture, gRenderer, &gBlinkySpriteClips[gBlinky.mDirection + GHOST_DEAD_EFFECT][0], 0.0);
+                        }
+                        
+                        // Renderiza o fantasma rosa
+                        if(!gPinky.mDead){
+                            if(gotPowerUp){
+                                gPinky.render(&gPinky, &gPinkyTexture, gRenderer, &gGhostVulnerableSpriteClips[ghostVulnerableFrame / (GHOST_VULNERABLE_SPRITES * 2)], 0.0);
+                            } else {
+                                gPinky.render(&gPinky, &gPinkyTexture, gRenderer, &gPinkySpriteClips[gPinky.mDirection][ghostFrame / (GHOSTS_WALKING_SPRITES * 4)], 0.0);
+                            }
+                        } else {
+                            gPinky.render(&gPinky, &gPinkyTexture, gRenderer, &gPinkySpriteClips[gPinky.mDirection + GHOST_DEAD_EFFECT][0], 0.0);
+                        }
+                        
+                        // Renderiza o fantasma azul
+                        if(!gInky.mDead){
+                            if(gotPowerUp){
+                                gInky.render(&gInky, &gInkyTexture, gRenderer, &gGhostVulnerableSpriteClips[ghostVulnerableFrame / (GHOST_VULNERABLE_SPRITES * 2)], 0.0);
+                            } else {
+                                gInky.render(&gInky, &gInkyTexture, gRenderer, &gInkySpriteClips[gInky.mDirection][ghostFrame / (GHOSTS_WALKING_SPRITES * 4)], 0.0);
+                            }
+                        } else {
+                            gInky.render(&gInky, &gInkyTexture, gRenderer, &gInkySpriteClips[gInky.mDirection + GHOST_DEAD_EFFECT][0], 0.0);
+                        }
+                        
+                        // Renderiza o fantasma laranja
+                        if(!gClyde.mDead){
+                            if(gotPowerUp){
+                                gClyde.render(&gClyde, &gClydeTexture, gRenderer, &gGhostVulnerableSpriteClips[ghostVulnerableFrame / (GHOST_VULNERABLE_SPRITES * 2)], 0.0);
+                            } else {
+                                gClyde.render(&gClyde, &gClydeTexture, gRenderer, &gClydeSpriteClips[gClyde.mDirection][ghostFrame / (GHOSTS_WALKING_SPRITES * 4)], 0.0);
+                            }
+                        } else {
+                            gClyde.render(&gClyde, &gClydeTexture, gRenderer, &gClydeSpriteClips[gClyde.mDirection + GHOST_DEAD_EFFECT][0], 0.0);
+                        }
                         
                     /* Não ta servindo pra nada isso aqui ainda, pretendo usar pra salvar as melhores pontuações
                      |   // for(int i = 0; i < TOTAL_DATA; i++){
@@ -527,7 +572,7 @@ int main (int argc, char **argv)
                     */
                     
                     }
-                } 
+                }   
                 
                 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -634,6 +679,13 @@ int main (int argc, char **argv)
                 // Circula a animação do Pacman
                 if(pacmanFrame / PACMAN_WALKING_SPRITES >= PACMAN_WALKING_SPRITES) pacmanFrame = 0;
 
+                // Vai para o próximo frame dos fantasmas andando
+                ghostFrame++;
+                ghostVulnerableFrame++;
+                
+                // Circula a animação
+                if(ghostFrame / (GHOSTS_WALKING_SPRITES * 4) >= GHOSTS_WALKING_SPRITES) ghostFrame = 0;
+                if(ghostVulnerableFrame / (GHOST_VULNERABLE_SPRITES * 2) >= GHOST_VULNERABLE_SPRITES) ghostVulnerableFrame = 0;
                 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
