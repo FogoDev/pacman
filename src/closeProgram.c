@@ -49,7 +49,6 @@ void closeProgram(Tile_object *tiles[])
     Mix_FreeChunk(gExtraLiveSoundEffect);
     Mix_FreeChunk(gOpeningSoundEffect);
     Mix_FreeChunk(gWakaWakaSoundEffect);
-    
     gDiesSoundEffect = NULL;
     gEatingCherrySoundEffect = NULL;
     gEatingGhostSoundEffect = NULL;

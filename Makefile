@@ -18,13 +18,13 @@ TARGET=bin/pacman
 # Compilando
 all: $(TARGET)
 
-$(TARGET): main.o init.o loadMedia.o loadTexture.o closeProgram.o globals.o textureObject.o buttonObject.o timeObject.o dotObject.o checkCollision.o tileObject.o touchesWall.o
+$(TARGET): main.o init.o loadMedia.o loadTexture.o closeProgram.o globals.o textureObject.o timeObject.o dotObject.o checkCollision.o tileObject.o touchesWall.o
 	$(CC) $^ $(SDL_CFLAGS) -g -o $@ $(SDL_LDFLAGS)
 
-main.o: main.c constantsNdefines.h init.h loadMedia.h closeProgram.h textureObject.h dotObject.h  buttonObject.h timeObject.h tileObject.h globals.h checkCollision.h
+main.o: main.c constantsNdefines.h init.h loadMedia.h closeProgram.h textureObject.h dotObject.h  timeObject.h tileObject.h globals.h checkCollision.h
 	$(CC) $(CFLAGS) $^ 
 
-globals.o: globals.c globals.h textureObject.h constantsNdefines.h buttonObject.h timeObject.h dotObject.h tileObject.h
+globals.o: globals.c globals.h textureObject.h constantsNdefines.h timeObject.h dotObject.h tileObject.h
 	$(CC) $(CFLAGS) $^
 
 init.o: init.c init.h constantsNdefines.h globals.h 
@@ -43,9 +43,6 @@ closeProgram.o: closeProgram.c closeProgram.h constantsNdefines.h globals.h text
 	$(CC) $(CFLAGS) $^
 
 textureObject.o: textureObject.c textureObject.h constantsNdefines.h 
-	$(CC) $(CFLAGS) $^
-
-buttonObject.o: buttonObject.c buttonObject.h constantsNdefines.h textureObject.h
 	$(CC) $(CFLAGS) $^
 
 timeObject.o: timeObject.c timeObject.h constantsNdefines.h

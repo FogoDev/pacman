@@ -1,32 +1,76 @@
 #include "globals.h"
 
+
+//////////////////////////// SDL STUFF /////////////////////////
+
 // A Janela em que vamos renderizar os bangs
 SDL_Window *gWindow = NULL;
 
 // O renderizador da janela
 SDL_Renderer *gRenderer = NULL;
 
+////////////////////////////////////////////////////////////////
+
+//////////////////////////// PACMAN //////////////////////////// 
+
+// Textura do pacman
+Texture_object gPacmanTexture;
+
+// Clips dos sprites do pacman
+SDL_Rect gPacmanSpriteClips[PACMAN_WALKING_SPRITES];
+
+// Ponto do pacman
+Dot_object gPacman;
+
+////////////////////////////////////////////////////////////////
+
+//////////////////////////// FANTASMAS /////////////////////////
+
+////////////////////////////////////////////////////////////////
+
+//////////////////////////// MAPA //////////////////////////////
+
+// Tiles do mapa
+Texture_object gTileTexture;
+
+// Clips de tiles do mapa
+SDL_Rect gTileClips[TOTAL_TILE_SPRITES];
+
+// Mapa de tiles
+Tile_object *tileSet[TOTAL_TILES];
+
+////////////////////////////////////////////////////////////////
+
+//////////////////////////// TEXTOS ////////////////////////////
+
 // Fonte usada globalmente
 TTF_Font *gFont = NULL;
 
-// Fonte usada na tela inicial
+// Fonte usada na tela inicial igual a gFont, porém com um tamanho menor
 TTF_Font *gDevFont = NULL;
 
-// Objetos de textura
-Texture_object gPacmanTexture;
-SDL_Rect gPacmanSpriteClips[PACMAN_WALKING_SPRITES];
+// Textura do texto do desenvolvedor
+Texture_object gDevTextTexture;
 
+// Texturas da Tela inicial
+Texture_object gPressEnterTextTexture;
+Texture_object gPacmanLogoTexture;
+
+// Textos usados na tela de jogo
 Texture_object gScoreTextTexture;
 Texture_object gPointsTextTexture;
 Texture_object gLivesTextTexture;
+
+// Textura de novo nível
+Texture_object gNewLevelTextTexture;
+
+
 // Texture_object gDataTexture[TOTAL_DATA];
-Texture_object gTileTexture;
+// Sint32 gData[TOTAL_DATA];
 
-SDL_Rect gTileClips[TOTAL_TILE_SPRITES];
+////////////////////////////////////////////////////////////////
 
-// Variável pra guardar a pontuação do jogador
-unsigned long long int gScore = 0;
-
+//////////////////////////// SONS //////////////////////////////
 
 // As músicas que serão tocadas
 Mix_Chunk *gSirenMusic;
@@ -40,28 +84,9 @@ Mix_Chunk *gExtraLiveSoundEffect;
 Mix_Chunk *gOpeningSoundEffect;
 Mix_Chunk *gWakaWakaSoundEffect;
 
-// Temporizador para contar o fps
-Time_object fpsTimer;
+////////////////////////////////////////////////////////////////
 
-// Temporizador pra limitar o fps
-Time_object capTimer;
-
-// O ponto que vamos mexer pela tela
-Dot_object gPacman;
-
-// Data points
-Sint32 gData[TOTAL_DATA];
-
-// Mapa de tiles
-Tile_object *tileSet[TOTAL_TILES];
-
-
-// Textura do texto do desenvolvedor
-Texture_object gDevTextTexture;
-
-// Texturas da Tela inicial
-Texture_object gPacmanLogoTexture;
-Texture_object gPressEnterTextTexture;
+//////////////////////////// EXTRAS ////////////////////////////
 
 // Quantidade total de pills e powerups no mapa
 int gTotalPills;
@@ -69,6 +94,14 @@ int gTotalPills;
 // Nível do jogo, começando do 1;
 int gLevel = 1;
 
-// Textura de novo nível
-Texture_object gNewLevelTextTexture;
+// Variável pra guardar a pontuação do jogador
+unsigned long long int gScore = 0;
+
+// Temporizador para contar o fps
+Time_object fpsTimer;
+
+// Temporizador pra limitar o fps
+Time_object capTimer;
+
+////////////////////////////////////////////////////////////////
 

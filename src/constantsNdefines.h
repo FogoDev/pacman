@@ -13,21 +13,6 @@ typedef short int bool;
 #define false 0
 #define true !false
 
-#define BUTTON_WIDTH 300
-#define BUTTON_HEIGHT 200
-#define TOTAL_BUTTONS 4
-
-enum _ButtonSprite
-{
-    BUTTON_SPRITE_MOUSE_OUT = 0,
-    BUTTON_SPRITE_MOUSE_OVER_MOTION = 1,
-    BUTTON_SPRITE_MOUSE_DOWN = 2,
-    BUTTON_SPRITE_MOUSE_UP = 3,
-    BUTTON_SPRITE_TOTAL = 4
-};
-
-typedef enum _ButtonSprite ButtonSprite;
-
 typedef struct _Circle{
     int x, y;
     int r;
@@ -76,7 +61,18 @@ enum _Tiles
 
 // Constantes de sprites do Pacman
 #define PACMAN_WALKING_SPRITES 4
-#define PACMAN_DEATH_SPRITES 10
+#define PACMAN_DEATH_SPRITES 12
+
+// Constantes dos sprites dos fantasmas
+#define GHOSTS_WALKING_SPRITES 2
+
+enum _GHOST_DIRECTION
+{
+    GHOST_DOWN,
+    GHOST_TOP,
+    GHOST_LEFT,
+    GHOST_RIGHT
+};
 
 
 #endif

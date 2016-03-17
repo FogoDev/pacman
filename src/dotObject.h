@@ -37,7 +37,7 @@ typedef struct _Dot_object {
     int mVelX, mVelY;
     
     // A direção que o ponto está andando
-    double mDirection;
+    int mDirection;
     
     // Determina se o ponto é um fantasma
     bool mGhost;

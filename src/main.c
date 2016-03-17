@@ -10,7 +10,6 @@
 #include "closeProgram.h"
 #include "globals.h"
 #include "textureObject.h"
-#include "buttonObject.h"
 #include "timeObject.h"
 #include "dotObject.h"
 #include "tileObject.h"
@@ -389,7 +388,7 @@ int main (int argc, char **argv)
                         
                         // Renderiza o pacman
                         SDL_Rect *currentPacmanClip = &gPacmanSpriteClips[pacmanFrame / PACMAN_WALKING_SPRITES];
-                        gPacman.render(&gPacman, &gPacmanTexture, gRenderer, currentPacmanClip, gPacman.mDirection);
+                        gPacman.render(&gPacman, &gPacmanTexture, gRenderer, currentPacmanClip,(double) gPacman.mDirection);
                         
                                     
                         // Renderiza as texturas de texto
