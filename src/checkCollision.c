@@ -2,43 +2,85 @@
 
 
 // Detector de colisões quadrado / quadrado
-bool checkSSCollision(SDL_Rect a[], SDL_Rect b[])
+bool checkSSCollision(SDL_Rect a, SDL_Rect b)
 {
-    // Os lados dos retângulos
+    //The sides of the rectangles
     int leftA, leftB;
     int rightA, rightB;
     int topA, topB;
     int bottomA, bottomB;
-    
-    // Itera por todas as caixas de A
-    for(int Abox = 0; Abox < 11; Abox++){
-        
-        // Calcula os lados do retângulo A
-        leftA = a[Abox].x;
-        rightA = a[Abox].x + a[Abox].w;
-        topA = a[Abox].y;
-        bottomA = a[Abox].y + a[Abox].h;
-        
-        // Itera todas as caixas de B
-        for(int Bbox = 0; Bbox < 11; Bbox++){
-            
-            // Calcula os lados do retângulo B
-            leftB = b[Bbox].x;
-            rightB = b[Bbox].x + b[Bbox].w;
-            topB = b[Bbox].y;
-            bottomB = b[Bbox].y + b[Bbox].h;
-            
-            // Se nenhum lado de A está fora de B
-            if(((bottomA <= topB) || (topA >= bottomB) || (rightA <= leftB) || (leftA >= rightB) ) == false )
-            {
-                // Uma colisão foi detectada
-                return true;
-            }
-        }
+
+    //Calculate the sides of rect A
+    leftA = a.x;
+    rightA = a.x + a.w;
+    topA = a.y;
+    bottomA = a.y + a.h;
+
+    //Calculate the sides of rect B
+    leftB = b.x;
+    rightB = b.x + b.w;
+    topB = b.y;
+    bottomB = b.y + b.h;
+
+    //If any of the sides from A are outside of B
+    if( bottomA <= topB )
+    {
+        return false;
     }
+
+    if( topA >= bottomB )
+    {
+        return false;
+    }
+
+    if( rightA <= leftB )
+    {
+        return false;
+    }
+
+    if( leftA >= rightB )
+    {
+        return false;
+    }
+
+    //If none of the sides from A are outside B
+    return true;
     
-    // Se nenhuma das collision boxes foi tocada
-    return false;
+    // // Os lados dos retângulos
+    // int leftA, leftB;
+    // int rightA, rightB;
+    // int topA, topB;
+    // int bottomA, bottomB;
+    
+    // // Itera por todas as caixas de A
+    // for(int Abox = 0; Abox < 11; Abox++){
+        
+    //     // Calcula os lados do retângulo A
+    //     leftA = a[Abox].x;
+    //     rightA = a[Abox].x + a[Abox].w;
+    //     topA = a[Abox].y;
+    //     bottomA = a[Abox].y + a[Abox].h;
+        
+    //     // Itera todas as caixas de B
+    //     for(int Bbox = 0; Bbox < 11; Bbox++){
+            
+    //         // Calcula os lados do retângulo B
+    //         leftB = b[Bbox].x;
+    //         rightB = b[Bbox].x + b[Bbox].w;
+    //         topB = b[Bbox].y;
+    //         bottomB = b[Bbox].y + b[Bbox].h;
+            
+    //         // Se nenhum lado de A está fora de B
+    //         if(((bottomA <= topB) || (topA >= bottomB) || (rightA <= leftB) || (leftA >= rightB) ) == false )
+    //         {
+    //             // Uma colisão foi detectada
+    //             return true;
+    //         }
+    //     }
+    // }
+    
+    // // Se nenhuma das collision boxes foi tocada
+    // return false;
 }
 
 
@@ -78,37 +120,49 @@ bool checkCSCollision(Circle a, SDL_Rect b)
 
 
 
-bool eatPill(Circle pacman, SDL_Rect pillTile)
+bool eat(SDL_Rect pacman, SDL_Rect pillTile)
 {
-        // Ponto mais perto da collision boxes
-    int cX, cY;
-    
-    // Acha a posição mais perto de X
-    if(pacman.x < pillTile.x){
-        cX = pillTile.x;
-    } else if(pacman.x > pillTile.x + pillTile.w){
-        cX = pillTile.x + pillTile.w;
-    } else{
-        cX = pacman.x;
+    //The sides of the rectangles
+    int leftA, leftB;
+    int rightA, rightB;
+    int topA, topB;
+    int bottomA, bottomB;
+
+    //Calculate the sides of rect A
+    leftA = pacman.x;
+    rightA = pacman.x + pacman.w;
+    topA = pacman.y;
+    bottomA = pacman.y + pacman.h;
+
+    //Calculate the sides of rect B
+    rightB = pillTile.x + pillTile.w*0.25;
+    leftB = pillTile.x + pillTile.w*0.75;
+    topB = pillTile.y + pillTile.h*0.75;
+    bottomB = pillTile.y + pillTile.h*0.25;
+
+    //If any of the sides from A are outside of B
+    if( bottomA <= topB )
+    {
+        return false;
     }
-    
-    // Acha a posição mais perto de y
-    if(pacman.y < pillTile.y){
-        cY = pillTile.y;
-    } else if(pacman.y > pillTile.y + pillTile.h){
-        cY = pillTile.y + pillTile.h;
-    } else{
-        cY = pacman.y;
+
+    if( topA >= bottomB )
+    {
+        return false;
     }
-    
-    // Se o ponto mais perto for dentro do circulo
-    if(distanceSquared(pacman.x, pacman.y, cX, cY) < (pacman.r * pacman.r) / 16){
-        // Essa caixa e esse circulo colidiram
-        return true;
+
+    if( rightA <= leftB )
+    {
+        return false;
     }
-    
-    // Se eles não colidiram
-    return false;
+
+    if( leftA >= rightB )
+    {
+        return false;
+    }
+
+    //If none of the sides from A are outside B
+    return true;
 }
 
 // Detector de colisões circulo / circulo

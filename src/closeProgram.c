@@ -36,6 +36,7 @@ void closeProgram(Tile_object *tiles[])
     gPacmanLogoTexture.textureFree(&gPacmanLogoTexture);
     gPressEnterTextTexture.textureFree(&gPressEnterTextTexture);
     gNewLevelTextTexture.textureFree(&gNewLevelTextTexture);
+    gGameOverTextTexture.textureFree(&gGameOverTextTexture);
     gBlinkyTexture.textureFree(&gBlinkyTexture);
     gPinkyTexture.textureFree(&gPinkyTexture);
     gInkyTexture.textureFree(&gInkyTexture);

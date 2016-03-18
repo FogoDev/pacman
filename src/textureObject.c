@@ -17,7 +17,7 @@ bool Texture_object_loadFromFile(void *self, const char *path, SDL_Renderer *gRe
         printf("Não foi possível carregar a imagem %s! SDL_Image Error: %s\n", path, IMG_GetError());
     } else {
         // Color key da imagem
-        SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0xFF, 0, 0xFF));
+        SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0, 0, 0));
         
         // Cria a textura a partir dos pixels da superficie
         newTexture = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);

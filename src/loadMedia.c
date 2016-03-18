@@ -32,6 +32,11 @@ bool loadMedia(Tile_object *tiles[], SDL_Rect *gTileClips)
             printf("Falha ao renderizar a textura do texto de nível 1!\n");
             success = false;
         }
+        
+        if(!gGameOverTextTexture.loadFromRenderedText(&gGameOverTextTexture, "Game Over", textColor, gRenderer, gFont)){
+            printf("Falha ao renderizar a textura do texto de game over!\n");
+            success = false;
+        }
     }
     
     gDevFont = TTF_OpenFont("../res/fonts/emulogic.ttf", 22);
@@ -150,6 +155,65 @@ bool loadMedia(Tile_object *tiles[], SDL_Rect *gTileClips)
         gPacmanSpriteClips[3].w = TILE_WIDTH;
         gPacmanSpriteClips[3].h = TILE_HEIGHT;
         
+        gPacmanDiesSpriteClips[0].x = 0;
+        gPacmanDiesSpriteClips[0].y = 384;
+        gPacmanDiesSpriteClips[0].w = TILE_WIDTH;
+        gPacmanDiesSpriteClips[0].h = TILE_HEIGHT;
+        
+        gPacmanDiesSpriteClips[1].x = 32;
+        gPacmanDiesSpriteClips[1].y = 384;
+        gPacmanDiesSpriteClips[1].w = TILE_WIDTH;
+        gPacmanDiesSpriteClips[1].h = TILE_HEIGHT;
+        
+        gPacmanDiesSpriteClips[2].x = 64;
+        gPacmanDiesSpriteClips[2].y = 384;
+        gPacmanDiesSpriteClips[2].w = TILE_WIDTH;
+        gPacmanDiesSpriteClips[2].h = TILE_HEIGHT;
+        
+        gPacmanDiesSpriteClips[3].x = 96;
+        gPacmanDiesSpriteClips[3].y = 384;
+        gPacmanDiesSpriteClips[3].w = TILE_WIDTH;
+        gPacmanDiesSpriteClips[3].h = TILE_HEIGHT;
+        
+        gPacmanDiesSpriteClips[4].x = 128;
+        gPacmanDiesSpriteClips[4].y = 384;
+        gPacmanDiesSpriteClips[4].w = TILE_WIDTH;
+        gPacmanDiesSpriteClips[4].h = TILE_HEIGHT;
+        
+        gPacmanDiesSpriteClips[5].x = 160;
+        gPacmanDiesSpriteClips[5].y = 384;
+        gPacmanDiesSpriteClips[5].w = TILE_WIDTH;
+        gPacmanDiesSpriteClips[5].h = TILE_HEIGHT;
+        
+        gPacmanDiesSpriteClips[6].x = 192;
+        gPacmanDiesSpriteClips[6].y = 384;
+        gPacmanDiesSpriteClips[6].w = TILE_WIDTH;
+        gPacmanDiesSpriteClips[6].h = TILE_HEIGHT;
+        
+        gPacmanDiesSpriteClips[7].x = 224;
+        gPacmanDiesSpriteClips[7].y = 384;
+        gPacmanDiesSpriteClips[7].w = TILE_WIDTH;
+        gPacmanDiesSpriteClips[7].h = TILE_HEIGHT;
+        
+        gPacmanDiesSpriteClips[8].x = 256;
+        gPacmanDiesSpriteClips[8].y = 384;
+        gPacmanDiesSpriteClips[8].w = TILE_WIDTH;
+        gPacmanDiesSpriteClips[8].h = TILE_HEIGHT;
+        
+        gPacmanDiesSpriteClips[9].x = 288;
+        gPacmanDiesSpriteClips[9].y = 384;
+        gPacmanDiesSpriteClips[9].w = TILE_WIDTH;
+        gPacmanDiesSpriteClips[9].h = TILE_HEIGHT;
+        
+        gPacmanDiesSpriteClips[10].x = 320;
+        gPacmanDiesSpriteClips[10].y = 384;
+        gPacmanDiesSpriteClips[10].w = TILE_WIDTH;
+        gPacmanDiesSpriteClips[10].h = TILE_HEIGHT;
+        
+        gPacmanDiesSpriteClips[11].x = 352;
+        gPacmanDiesSpriteClips[11].y = 384;
+        gPacmanDiesSpriteClips[11].w = TILE_WIDTH;
+        gPacmanDiesSpriteClips[11].h = TILE_HEIGHT;
         
     }
     

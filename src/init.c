@@ -82,22 +82,25 @@ bool init()
                 // Inicializa textura de novo nível
                 Texture_object_new(&gNewLevelTextTexture);
                 
+                // Inicializa textura de game over
+                Texture_object_new(&gGameOverTextTexture);
+                
                 // Inicializa os temporizadores
                 Time_object_new(&fpsTimer);
                 Time_object_new(&capTimer);
                 
                 
                 // Inicializa o pacman
-                Dot_object_new(&gPacman, 32, 368, false);
+                Dot_object_new(&gPacman, 32, 384, false);
                 
                 // Inicializa textura do pacman
                 Texture_object_new(&gPacmanTexture);
                 
                 //Inicializa os fantasmas
-                Dot_object_new(&gBlinky, 236, 368, true);
-                Dot_object_new(&gPinky, 280, 368, true);
-                Dot_object_new(&gInky, 326, 368, true);
-                Dot_object_new(&gClyde, 372, 368, true);
+                Dot_object_new(&gBlinky, 9 * 32, 384, true);
+                Dot_object_new(&gPinky, 10 * 32, 384, true);
+                Dot_object_new(&gInky, 11 * 32, 384, true);
+                Dot_object_new(&gClyde, 12 * 32, 384, true);
                 
                 // Inicializa as texturas dos fantasmas
                 Texture_object_new(&gBlinkyTexture);

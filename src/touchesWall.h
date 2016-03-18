@@ -11,6 +11,6 @@
 #include "tileObject.h"
 
 // Checa a colisão contra os tijolos do mapa
-bool touchesWall(Circle circle, Tile_object *tiles[], bool ghost);
+bool touchesWall(SDL_Rect box, Tile_object *tiles[], bool ghost);
 
 #endif

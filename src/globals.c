@@ -18,6 +18,7 @@ Texture_object gPacmanTexture;
 
 // Clips dos sprites do pacman
 SDL_Rect gPacmanSpriteClips[PACMAN_WALKING_SPRITES];
+SDL_Rect gPacmanDiesSpriteClips[PACMAN_DEATH_SPRITES];
 
 // Ponto do pacman
 Dot_object gPacman;
@@ -86,6 +87,9 @@ Texture_object gLivesTextTexture;
 
 // Textura de novo nível
 Texture_object gNewLevelTextTexture;
+
+// Textura de game over
+Texture_object gGameOverTextTexture;
 
 
 // Texture_object gDataTexture[TOTAL_DATA];

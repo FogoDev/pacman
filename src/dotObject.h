@@ -5,6 +5,8 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
+#include <time.h>
+#include <stdlib.h>
 #include "constantsNdefines.h"
 #include "textureObject.h"
 #include "checkCollision.h"
@@ -12,7 +14,7 @@
 #include "touchesWall.h"
 
 
-typedef struct _Dot_object {
+struct _Dot_object {
     
     // As dimensões do ponto
     const int DOT_WIDTH;
@@ -25,13 +27,13 @@ typedef struct _Dot_object {
     void (*handleEvent)(void *self, SDL_Event *e);
     
     // Move o ponto e checa colisões
-    void (*move)(void *self, Tile_object *tiles[]);
+    void (*move)(struct _Dot_object *dot, Tile_object *tiles[]);
     
     // Renderiza o ponto na tela
     void (*render)(void *self, Texture_object *texture, SDL_Renderer *gRenderer, SDL_Rect *gSpriteClip, double angle);
     
     // Posições X e Y do ponto
-    int mPosX, mPosY;
+    // int mPosX, mPosY;
     
     // A velocidade do ponto
     int mVelX, mVelY;
@@ -42,21 +44,23 @@ typedef struct _Dot_object {
     
     // Atributos exclusivos de fantasma
     bool mGhost;
-    bool mVulnerable;
+    bool mXInversor;
+    bool mYInversor;
     bool mDead;
     
-    // Collision circle do ponto
-    Circle mCollider;
+    // Collision box do ponto
+    SDL_Rect mBox;
     
-    // Move o circulo de colisão em relação a posição do ponto
-    void (*shiftColliders)(void *self);
     
-} Dot_object;
+}; 
+
+typedef struct _Dot_object Dot_object;
 
 void Dot_object_handleEvent(void *self, SDL_Event *e);
-void Dot_object_move(void *self, Tile_object *tiles[]);
+void Dot_object_move(Dot_object *dot, Tile_object *tiles[]);
 void Dot_object_render(void *self, Texture_object *texture, SDL_Renderer *gRenderer, SDL_Rect *gSpriteClip, double angle);
 void Dot_object_shiftColliders(void *self);
+void Dot_object_moveGhost(Dot_object *ghost, Tile_object *tiles[]);
 
 void Dot_object_new(Dot_object *dot, int x, int y, bool ghost);
 

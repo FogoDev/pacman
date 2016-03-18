@@ -63,11 +63,14 @@ int main (int argc, char **argv)
 |       INICIALIZAR AS MECÂNICAS DE CONTROLE DE FRAMERATE
 |       VARIÁVEIS DE BUFFER PARA TEXTOS DINÂMICOS
 |       VARIÁVEIS DE CONTROLE PRA EXECUÇÃO DO SOM DE WAKA WAKA
+|       VERIFICA SE O PACMAN MORREU
+|       TIMER DE TEMPO DE MORTE PROS FANTASMAS
 */
             
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+            srand(time(NULL));
             
             // Flag do loop principal 
             bool quit = false;
@@ -122,6 +125,18 @@ int main (int argc, char **argv)
             bool playingWaka = false;
             bool stopPlayingWaka = false;
             
+            // Verifica se o pacman morreu
+            bool pacmanDead = false;
+            
+            // Timers de tempos de morte dos fantasmas
+            Uint32 blinkyDeadTimer;
+            Uint32 pinkyDeadTimer;
+            Uint32 inkyDeadTimer;
+            Uint32 clydeDeadTimer;
+            
+            // Variável de frames da morte do pacman
+            int pacmanDeadFrame = 0;
+            
         /* Não ta servindo pra nada isso aqui ainda, pretendo usar pra salvar as melhores pontuações
          |   // // Ponto de input atual
          |   // int currentData = 0;
@@ -165,9 +180,6 @@ int main (int argc, char **argv)
                 // Inicia o temporizador pra limitar o fps
                 capTimer.start(&capTimer);
        
-       
-       
-                
                 // Manipula os eventos na fila
                 while(SDL_PollEvent(&e) != false){
                     // Usuario requisitou fechamento do programa
@@ -260,7 +272,7 @@ int main (int argc, char **argv)
                */
 
                     // Manipula os inputs para o pacman
-                    if(gameStarted) gPacman.handleEvent(&gPacman, &e);
+                    if(gameStarted && !pacmanDead) gPacman.handleEvent(&gPacman, &e);
 
                 }
                 
@@ -312,14 +324,14 @@ int main (int argc, char **argv)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                 // Captura a posição do pacman antes de movê-lo
-                int pacmanLastX = gPacman.mPosX;
-                int pacmanLastY = gPacman.mPosY;
+                int pacmanLastX = gPacman.mBox.x;
+                int pacmanLastY = gPacman.mBox.y;
                 
 
                 // Move o ponto tocando a música e comendo as pills
                 gPacman.move(&gPacman, tileSet);
                 for (int i = 0; i < TOTAL_TILES; i++){
-                    if(eatPill(gPacman.mCollider, tileSet[i]->mBox)){
+                    if(eat(gPacman.mBox, tileSet[i]->mBox)){
                         if(tileSet[i]->mType == TILE_PILL || tileSet[i]->mType == TILE_POWERUP){
                             if(!Mix_Playing(CHANNEL_ONE)) {
                                 Mix_PlayChannel( CHANNEL_ONE, gWakaWakaSoundEffect, CONTINUOUS_LOOP);
@@ -352,10 +364,10 @@ int main (int argc, char **argv)
                 } 
                 
                 // Posiciona o ângulo que o pacman vai ser renderizado de acordo com o movimento que ele fez 
-                if(pacmanLastX < gPacman.mPosX) gPacman.mDirection = PACMAN_RIGHT;
-                else if(pacmanLastX > gPacman.mPosX) gPacman.mDirection = PACMAN_LEFT;
-                else if(pacmanLastY < gPacman.mPosY) gPacman.mDirection = PACMAN_DOWN;
-                else if(pacmanLastY > gPacman.mPosY) gPacman.mDirection = PACMAN_UP;
+                if(pacmanLastX < gPacman.mBox.x) gPacman.mDirection = PACMAN_RIGHT;
+                else if(pacmanLastX > gPacman.mBox.x) gPacman.mDirection = PACMAN_LEFT;
+                else if(pacmanLastY < gPacman.mBox.y) gPacman.mDirection = PACMAN_DOWN;
+                else if(pacmanLastY > gPacman.mBox.y) gPacman.mDirection = PACMAN_UP;
                 else {
                     pacmanFrame = 0;
                     stopPlayingWaka = true;
@@ -368,6 +380,85 @@ int main (int argc, char **argv)
                     }
                 }
                 
+                
+                // Verifica se o pacman tem powerup pra checar a colisão com os fantasmas;
+                if(gotPowerUp){
+                    if(eat(gPacman.mBox, gBlinky.mBox)){
+                        if(!gBlinky.mDead){
+                            gBlinky.mDead = true;
+                            gScore += 200;
+                            blinkyDeadTimer = SDL_GetTicks();
+                            Mix_PlayChannel(ANY_CHANNEL, gEatingGhostSoundEffect, ONE_TIME);
+                        }
+                    }
+                    if(eat(gPacman.mBox, gPinky.mBox)){
+                        if(!gPinky.mDead){
+                            gPinky.mDead = true;
+                            gScore += 200;
+                            pinkyDeadTimer = SDL_GetTicks();
+                            Mix_PlayChannel(ANY_CHANNEL, gEatingGhostSoundEffect, ONE_TIME);
+                        }
+                    }
+                    if(eat(gPacman.mBox, gInky.mBox)){
+                        if(!gInky.mDead){
+                            gInky.mDead = true;
+                            gScore += 200;
+                            inkyDeadTimer = SDL_GetTicks();
+                            Mix_PlayChannel(ANY_CHANNEL, gEatingGhostSoundEffect, ONE_TIME);
+                        }
+                    }
+                    if(eat(gPacman.mBox, gClyde.mBox)){
+                        if(!gClyde.mDead){
+                            gClyde.mDead = true;
+                            gScore += 200;
+                            clydeDeadTimer = SDL_GetTicks();
+                            Mix_PlayChannel(ANY_CHANNEL, gEatingGhostSoundEffect, ONE_TIME);
+                        }
+                    }
+                
+                } else {
+                    if(eat(gPacman.mBox, gBlinky.mBox)){
+                        if(!pacmanDead) {
+                            // Diminui uma vida
+                            lives--;
+                            if(!Mix_Playing(CHANNEL_FOUR)) Mix_PlayChannel(CHANNEL_FOUR, gDiesSoundEffect, ONE_TIME);
+                        }
+                        pacmanDead = true;
+                        
+                    }
+                    if(eat(gPacman.mBox, gPinky.mBox)){
+                        if(!pacmanDead) {
+                            // Diminui uma vida
+                            lives--;
+                            if(!Mix_Playing(CHANNEL_FOUR)) Mix_PlayChannel(CHANNEL_FOUR, gDiesSoundEffect, ONE_TIME);
+                        }
+                        pacmanDead = true;
+                        
+                    }
+                    if(eat(gPacman.mBox, gInky.mBox)){
+                        if(!pacmanDead) {
+                            // Diminui uma vida
+                            lives--;
+                            if(!Mix_Playing(CHANNEL_FOUR)) Mix_PlayChannel(CHANNEL_FOUR, gDiesSoundEffect, ONE_TIME);
+                        }
+                        pacmanDead = true;
+                        
+                    }
+                    if(eat(gPacman.mBox, gClyde.mBox)){
+                        if(!pacmanDead) {
+                            // Diminui uma vida
+                            lives--;
+                            if(!Mix_Playing(CHANNEL_FOUR)) Mix_PlayChannel(CHANNEL_FOUR, gDiesSoundEffect, ONE_TIME);
+                        }
+                        pacmanDead = true;
+                        
+                    }
+                }
+                
+                if(gBlinky.mDead) if(SDL_GetTicks() - blinkyDeadTimer >= 5000) gBlinky.mDead = false;
+                if(gPinky.mDead) if(SDL_GetTicks() - pinkyDeadTimer >= 5000) gPinky.mDead = false;
+                if(gInky.mDead) if(SDL_GetTicks() - inkyDeadTimer >= 5000) gInky.mDead = false;
+                if(gClyde.mDead) if(SDL_GetTicks() - clydeDeadTimer >= 5000) gClyde.mDead = false;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -388,31 +479,7 @@ int main (int argc, char **argv)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 
                 
-                // // Captura a posição do blinky antes de movê-lo
-                // int blinkyLastX = gBlinky.mPosX;
-                // int blinkyLastY = gBlinky.mPosY;
                 
-                // // Captura a posição do pinky antes de movê-lo
-                // int pinkyLastX = gPinky.mPosX;
-                // int pinkyLastY = gPinky.mPosY;
-                
-                // // Captura a posição do inky antes de movê-lo
-                // int inkyLastX = gInky.mPosX;
-                // int inkyLastY = gInky.mPosY;
-                
-                // // Captura a posição do clyde antes de movê-lo
-                // int clydeLastX = gClyde.mPosX;
-                // int clydeLastY = gClyde.mPosY;
-                
-                // /*
-                // |           Bolar um esquema de movimentação de inteligência artificial aqui 
-                // */
-                
-                // // Define o frame que o blinky será renderizado de acordo com o movimento que ele fez 
-                // if(blinkyLastX < gBlinky.mPosX) gBlinky.mDirection = GHOST_RIGHT;
-                // else if(blinkyLastX > gBlinky.mPosX) gBlinky.mDirection = GHOST_LEFT;
-                // else if(blinkyLastY < gBlinky.mPosY) gBlinky.mDirection = GHOST_DOWN;
-                // else if(blinkyLastY > gBlinky.mPosY) gBlinky.mDirection = GHOST_UP;
                 
             
             
@@ -473,106 +540,167 @@ int main (int argc, char **argv)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-                if(gameStarted){
+                
                     
-                    // Se for o primeiro nível, exibe a tela de nível 1
-                    if(firstLevel) {
-                        gNewLevelTextTexture.render(&gNewLevelTextTexture, (SCREEN_WIDTH - gNewLevelTextTexture.mWidth) / 2, SCREEN_HEIGHT / 2, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
-                        firstLevel = false;
-                        SDL_RenderPresent(gRenderer);
-                        SDL_Delay(NEWLVLPRESENTATION);
+                
+                    if(gameStarted){
                         
-                        
-                    } else {
-                        
-                        if(!Mix_Playing(CHANNEL_THREE) && !Mix_Playing(CHANNEL_ZERO)) Mix_PlayChannel(CHANNEL_THREE, gSirenMusic, CONTINUOUS_LOOP);
-                        // Renderiza o mapa
-                        for(int i = 0; i < TOTAL_TILES; i++){
-                            gTileTexture.render(&gTileTexture, tileSet[i]->mBox.x, tileSet[i]->mBox.y, gRenderer, &(gTileClips[tileSet[i]->mType]), 0.0, NULL, SDL_FLIP_NONE);
+                        // Se for o primeiro nível, exibe a tela de nível 1
+                        if(firstLevel) {
+                            gNewLevelTextTexture.render(&gNewLevelTextTexture, (SCREEN_WIDTH - gNewLevelTextTexture.mWidth) / 2, SCREEN_HEIGHT / 2, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
+                            firstLevel = false;
+                            SDL_RenderPresent(gRenderer);
+                            SDL_Delay(NEWLVLPRESENTATION);
                             
-                        /* POR ALGUM MOTIVO TOTALMENTE OBSCURO, ESSA LINHA DE BAIXO DÁ UM SEG FAULT, DEIXEI AQUI PRA PERGUNTAR PRO PROFESSOR
-                         |   // tileSet[i]->render(tileSet[i], &gTileTexture, gRenderer, gTileClips);
-                         |
-                         */
-                         
-                        }
-                        
-                        // Renderiza o pacman
-                        gPacman.render(&gPacman, &gPacmanTexture, gRenderer, &gPacmanSpriteClips[pacmanFrame / PACMAN_WALKING_SPRITES], (double) gPacman.mDirection);
-                        
-                                    
-                        // Renderiza as texturas de texto
-                        gLivesTextTexture.render(&gLivesTextTexture, TILE_WIDTH / 2, SCREEN_HEIGHT - (7* TILE_HEIGHT) /6, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
-                        gScoreTextTexture.render(&gScoreTextTexture, TILE_WIDTH / 2, TILE_HEIGHT / 2, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
-                        
-                        // Renderiza os pontos obtidos até o momento
-                        memset(scoreBuffer, '\0', sizeof(char) * 21);       
-                        sprintf(scoreBuffer, "%llu", gScore);
-                        gPointsTextTexture.loadFromRenderedText(&gPointsTextTexture, scoreBuffer, textColor, gRenderer, gFont);
-                        gPointsTextTexture.render(&gPointsTextTexture, gScoreTextTexture.mWidth + TILE_WIDTH , TILE_HEIGHT / 2, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
-                        
-                        // Renderiza a quantidade atual de vidas restantes do jogador
-                        for(int i = 0; i < lives; i++){
-                            gPacmanTexture.render(&gPacmanTexture, TILE_WIDTH + gLivesTextTexture.mWidth + ((5 * TILE_WIDTH / 4) * i), SCREEN_HEIGHT -  TILE_HEIGHT -2, gRenderer, &gPacmanSpriteClips[2], 0.0, NULL, SDL_FLIP_NONE);
-                        }
-                        
-                        
-                        
-                        // Renderiza o fantasma vermelho
-                        if(!gBlinky.mDead){
-                            if(gotPowerUp){
-                                gBlinky.render(&gBlinky, &gBlinkyTexture, gRenderer, &gGhostVulnerableSpriteClips[ghostVulnerableFrame / (GHOST_VULNERABLE_SPRITES * 2)], 0.0);
-                            } else {
-                                gBlinky.render(&gBlinky, &gBlinkyTexture, gRenderer, &gBlinkySpriteClips[gBlinky.mDirection][ghostFrame / (GHOSTS_WALKING_SPRITES * 4)], 0.0);
-                            }
+                            
                         } else {
-                            gBlinky.render(&gBlinky, &gBlinkyTexture, gRenderer, &gBlinkySpriteClips[gBlinky.mDirection + GHOST_DEAD_EFFECT][0], 0.0);
-                        }
-                        
-                        // Renderiza o fantasma rosa
-                        if(!gPinky.mDead){
-                            if(gotPowerUp){
-                                gPinky.render(&gPinky, &gPinkyTexture, gRenderer, &gGhostVulnerableSpriteClips[ghostVulnerableFrame / (GHOST_VULNERABLE_SPRITES * 2)], 0.0);
-                            } else {
-                                gPinky.render(&gPinky, &gPinkyTexture, gRenderer, &gPinkySpriteClips[gPinky.mDirection][ghostFrame / (GHOSTS_WALKING_SPRITES * 4)], 0.0);
+                            
+                            if(!Mix_Playing(CHANNEL_THREE) && !Mix_Playing(CHANNEL_ZERO)) Mix_PlayChannel(CHANNEL_THREE, gSirenMusic, CONTINUOUS_LOOP);
+                            // Renderiza o mapa
+                            for(int i = 0; i < TOTAL_TILES; i++){
+                                gTileTexture.render(&gTileTexture, tileSet[i]->mBox.x, tileSet[i]->mBox.y, gRenderer, &(gTileClips[tileSet[i]->mType]), 0.0, NULL, SDL_FLIP_NONE);
+                                
+                            /* POR ALGUM MOTIVO TOTALMENTE OBSCURO, ESSA LINHA DE BAIXO DÁ UM SEG FAULT, DEIXEI AQUI PRA PERGUNTAR PRO PROFESSOR
+                            |   // tileSet[i]->render(tileSet[i], &gTileTexture, gRenderer, gTileClips);
+                            |
+                            */
+                            
                             }
-                        } else {
-                            gPinky.render(&gPinky, &gPinkyTexture, gRenderer, &gPinkySpriteClips[gPinky.mDirection + GHOST_DEAD_EFFECT][0], 0.0);
-                        }
-                        
-                        // Renderiza o fantasma azul
-                        if(!gInky.mDead){
-                            if(gotPowerUp){
-                                gInky.render(&gInky, &gInkyTexture, gRenderer, &gGhostVulnerableSpriteClips[ghostVulnerableFrame / (GHOST_VULNERABLE_SPRITES * 2)], 0.0);
-                            } else {
-                                gInky.render(&gInky, &gInkyTexture, gRenderer, &gInkySpriteClips[gInky.mDirection][ghostFrame / (GHOSTS_WALKING_SPRITES * 4)], 0.0);
+                            
+                            
+                            
+                           
+                                        
+                            // Renderiza as texturas de texto
+                            gLivesTextTexture.render(&gLivesTextTexture, TILE_WIDTH / 2, SCREEN_HEIGHT - (7* TILE_HEIGHT) /6, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
+                            gScoreTextTexture.render(&gScoreTextTexture, TILE_WIDTH / 2, TILE_HEIGHT / 2, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
+                            
+                            // Renderiza os pontos obtidos até o momento
+                            memset(scoreBuffer, '\0', sizeof(char) * 21);       
+                            sprintf(scoreBuffer, "%llu", gScore);
+                            gPointsTextTexture.loadFromRenderedText(&gPointsTextTexture, scoreBuffer, textColor, gRenderer, gFont);
+                            gPointsTextTexture.render(&gPointsTextTexture, gScoreTextTexture.mWidth + TILE_WIDTH , TILE_HEIGHT / 2, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
+                            
+                            // Renderiza a quantidade atual de vidas restantes do jogador
+                            for(int i = 0; i < lives; i++){
+                                gPacmanTexture.render(&gPacmanTexture, TILE_WIDTH + gLivesTextTexture.mWidth + ((5 * TILE_WIDTH / 4) * i), SCREEN_HEIGHT -  TILE_HEIGHT -2, gRenderer, &gPacmanSpriteClips[2], 0.0, NULL, SDL_FLIP_NONE);
                             }
-                        } else {
-                            gInky.render(&gInky, &gInkyTexture, gRenderer, &gInkySpriteClips[gInky.mDirection + GHOST_DEAD_EFFECT][0], 0.0);
-                        }
-                        
-                        // Renderiza o fantasma laranja
-                        if(!gClyde.mDead){
-                            if(gotPowerUp){
-                                gClyde.render(&gClyde, &gClydeTexture, gRenderer, &gGhostVulnerableSpriteClips[ghostVulnerableFrame / (GHOST_VULNERABLE_SPRITES * 2)], 0.0);
+                            
+                            
+                            
+                            // Renderiza o fantasma vermelho
+                            if(!gBlinky.mDead){
+                                if(gotPowerUp){
+                                    gBlinky.render(&gBlinky, &gBlinkyTexture, gRenderer, &gGhostVulnerableSpriteClips[ghostVulnerableFrame / (GHOST_VULNERABLE_SPRITES * 2)], 0.0);
+                                } else {
+                                    gBlinky.render(&gBlinky, &gBlinkyTexture, gRenderer, &gBlinkySpriteClips[gBlinky.mDirection][ghostFrame / (GHOSTS_WALKING_SPRITES * 4)], 0.0);
+                                }
                             } else {
-                                gClyde.render(&gClyde, &gClydeTexture, gRenderer, &gClydeSpriteClips[gClyde.mDirection][ghostFrame / (GHOSTS_WALKING_SPRITES * 4)], 0.0);
+                                gBlinky.render(&gBlinky, &gBlinkyTexture, gRenderer, &gBlinkySpriteClips[gBlinky.mDirection + GHOST_DEAD_EFFECT][0], 0.0);
                             }
-                        } else {
-                            gClyde.render(&gClyde, &gClydeTexture, gRenderer, &gClydeSpriteClips[gClyde.mDirection + GHOST_DEAD_EFFECT][0], 0.0);
-                        }
+                            
+                            // Renderiza o fantasma rosa
+                            if(!gPinky.mDead){
+                                if(gotPowerUp){
+                                    gPinky.render(&gPinky, &gPinkyTexture, gRenderer, &gGhostVulnerableSpriteClips[ghostVulnerableFrame / (GHOST_VULNERABLE_SPRITES * 2)], 0.0);
+                                } else {
+                                    gPinky.render(&gPinky, &gPinkyTexture, gRenderer, &gPinkySpriteClips[gPinky.mDirection][ghostFrame / (GHOSTS_WALKING_SPRITES * 4)], 0.0);
+                                }
+                            } else {
+                                gPinky.render(&gPinky, &gPinkyTexture, gRenderer, &gPinkySpriteClips[gPinky.mDirection + GHOST_DEAD_EFFECT][0], 0.0);
+                            }
+                            
+                            // Renderiza o fantasma azul
+                            if(!gInky.mDead){
+                                if(gotPowerUp){
+                                    gInky.render(&gInky, &gInkyTexture, gRenderer, &gGhostVulnerableSpriteClips[ghostVulnerableFrame / (GHOST_VULNERABLE_SPRITES * 2)], 0.0);
+                                } else {
+                                    gInky.render(&gInky, &gInkyTexture, gRenderer, &gInkySpriteClips[gInky.mDirection][ghostFrame / (GHOSTS_WALKING_SPRITES * 4)], 0.0);
+                                }
+                            } else {
+                                gInky.render(&gInky, &gInkyTexture, gRenderer, &gInkySpriteClips[gInky.mDirection + GHOST_DEAD_EFFECT][0], 0.0);
+                            }
+                            
+                            // Renderiza o fantasma laranja
+                            if(!gClyde.mDead){
+                                if(gotPowerUp){
+                                    gClyde.render(&gClyde, &gClydeTexture, gRenderer, &gGhostVulnerableSpriteClips[ghostVulnerableFrame / (GHOST_VULNERABLE_SPRITES * 2)], 0.0);
+                                } else {
+                                    gClyde.render(&gClyde, &gClydeTexture, gRenderer, &gClydeSpriteClips[gClyde.mDirection][ghostFrame / (GHOSTS_WALKING_SPRITES * 4)], 0.0);
+                                }
+                            } else {
+                                gClyde.render(&gClyde, &gClydeTexture, gRenderer, &gClydeSpriteClips[gClyde.mDirection + GHOST_DEAD_EFFECT][0], 0.0);
+                            }
+                            
+                            if(pacmanDead){
+                                gPacman.mVelX = 0;
+                                gPacman.mVelY = 0;
+                                // Renderiza o pacman
+                                gPacman.render(&gPacman, &gPacmanTexture, gRenderer, &gPacmanDiesSpriteClips[pacmanDeadFrame / PACMAN_DEATH_SPRITES], 0.0);
+                            }else {
+                                
+                                // Captura a posição do blinky antes de movê-lo
+                                int blinkyLastX = gBlinky.mBox.x;
+                                int blinkyLastY = gBlinky.mBox.y;
+                                
+                                // Captura a posição do pinky antes de movê-lo
+                                int pinkyLastX = gPinky.mBox.x;
+                                int pinkyLastY = gPinky.mBox.y;
+                                
+                                // Captura a posição do inky antes de movê-lo
+                                int inkyLastX = gInky.mBox.x;
+                                int inkyLastY = gInky.mBox.y;
+                                
+                                // Captura a posição do clyde antes de movê-lo
+                                int clydeLastX = gClyde.mBox.x;
+                                int clydeLastY = gClyde.mBox.y;
+                                
+                                gBlinky.move(&gBlinky, tileSet);
+                                gPinky.move(&gPinky, tileSet);
+                                gInky.move(&gInky, tileSet);
+                                gClyde.move(&gClyde, tileSet);
+                                
+                                // Define o frame que o blinky será renderizado de acordo com o movimento que ele fez 
+                                if(blinkyLastX < gBlinky.mBox.x) gBlinky.mDirection = GHOST_RIGHT;
+                                else if(blinkyLastX > gBlinky.mBox.x) gBlinky.mDirection = GHOST_LEFT;
+                                else if(blinkyLastY < gBlinky.mBox.y) gBlinky.mDirection = GHOST_DOWN;
+                                else if(blinkyLastY > gBlinky.mBox.y) gBlinky.mDirection = GHOST_UP;
+                                
+                                // Define o frame que o pinky será renderizado de acordo com o movimento que ele fez 
+                                if(pinkyLastX < gPinky.mBox.x) gPinky.mDirection = GHOST_RIGHT;
+                                else if(pinkyLastX > gPinky.mBox.x) gPinky.mDirection = GHOST_LEFT;
+                                else if(pinkyLastY < gPinky.mBox.y) gPinky.mDirection = GHOST_DOWN;
+                                else if(pinkyLastY > gPinky.mBox.y) gPinky.mDirection = GHOST_UP;
+                                
+                                // Define o frame que o inky será renderizado de acordo com o movimento que ele fez 
+                                if(inkyLastX < gInky.mBox.x) gInky.mDirection = GHOST_RIGHT;
+                                else if(inkyLastX > gInky.mBox.x) gInky.mDirection = GHOST_LEFT;
+                                else if(inkyLastY < gInky.mBox.y) gInky.mDirection = GHOST_DOWN;
+                                else if(inkyLastY > gInky.mBox.y) gInky.mDirection = GHOST_UP;
+                                
+                                // Define o frame que o clyde será renderizado de acordo com o movimento que ele fez 
+                                if(clydeLastX < gClyde.mBox.x) gClyde.mDirection = GHOST_RIGHT;
+                                else if(clydeLastX > gClyde.mBox.x) gClyde.mDirection = GHOST_LEFT;
+                                else if(clydeLastY < gClyde.mBox.y) gClyde.mDirection = GHOST_DOWN;
+                                else if(clydeLastY > gClyde.mBox.y) gClyde.mDirection = GHOST_UP;
+                                
+                                // Renderiza o pacman
+                                gPacman.render(&gPacman, &gPacmanTexture, gRenderer, &gPacmanSpriteClips[pacmanFrame / PACMAN_WALKING_SPRITES], (double) gPacman.mDirection);
+                                
+                            }
+                            
+                        /* Não ta servindo pra nada isso aqui ainda, pretendo usar pra salvar as melhores pontuações
+                        |   // for(int i = 0; i < TOTAL_DATA; i++){
+                        |   //     gDataTexture[i].render(&gDataTexture[i], (SCREEN_WIDTH - gDataTexture[i].mWidth) / 2, gScoreTextTexture.mHeight + gDataTexture[0].mHeight * i, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
+                        |   // }
+                        |   
+                        */
                         
-                    /* Não ta servindo pra nada isso aqui ainda, pretendo usar pra salvar as melhores pontuações
-                     |   // for(int i = 0; i < TOTAL_DATA; i++){
-                     |   //     gDataTexture[i].render(&gDataTexture[i], (SCREEN_WIDTH - gDataTexture[i].mWidth) / 2, gScoreTextTexture.mHeight + gDataTexture[0].mHeight * i, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
-                     |   // }
-                     |   
-                    */
-                    
-                    }
-                }   
+                        }
+                    }   
+                
+
+               
                 
                 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -687,6 +815,24 @@ int main (int argc, char **argv)
                 if(ghostFrame / (GHOSTS_WALKING_SPRITES * 4) >= GHOSTS_WALKING_SPRITES) ghostFrame = 0;
                 if(ghostVulnerableFrame / (GHOST_VULNERABLE_SPRITES * 2) >= GHOST_VULNERABLE_SPRITES) ghostVulnerableFrame = 0;
                 
+                if(pacmanDead) pacmanDeadFrame++;
+                if(pacmanDeadFrame / PACMAN_DEATH_SPRITES >= PACMAN_DEATH_SPRITES) {
+                    pacmanDeadFrame = 0;
+                    pacmanDead = false;
+                    
+                    // Coloca o pacman e os fantasmas na posição inicial;
+                    gPacman.mBox.x = 32;
+                    gPacman.mBox.y = 384;
+                    gBlinky.mBox.x = 9 * 32;
+                    gBlinky.mBox.y = 384;
+                    gPinky.mBox.x = 10 * 32;
+                    gPinky.mBox.y = 384;
+                    gInky.mBox.x = 11 * 32;
+                    gInky.mBox.y = 384;
+                    gClyde.mBox.x = 12 * 32;
+                    gClyde.mBox.y = 384;
+                }
+                
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -712,6 +858,7 @@ int main (int argc, char **argv)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                
                 
                 
                 if(!pillsLeft){
@@ -748,10 +895,17 @@ int main (int argc, char **argv)
                         }
                     }
                     
-                    // Coloca o pacman na posição inicial;
-                    gPacman.mPosX = 32;
-                    gPacman.mPosY = 400;
-                    
+                    // Coloca o pacman e os fantasmas na posição inicial;
+                    gPacman.mBox.x = 32;
+                    gPacman.mBox.y = 384;
+                    gBlinky.mBox.x = 9 * 32;
+                    gBlinky.mBox.y = 384;
+                    gPinky.mBox.x = 10 * 32;
+                    gPinky.mBox.y = 384;
+                    gInky.mBox.x = 11 * 32;
+                    gInky.mBox.y = 384;
+                    gClyde.mBox.x = 12 * 32;
+                    gClyde.mBox.y = 384;
                     
                     // Reinicia a contagem de pillsLeft
                     pillsLeft = gTotalPills;
@@ -764,6 +918,18 @@ int main (int argc, char **argv)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////                
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                if(!lives && !pacmanDead){
+                    // Limpa o renderizador
+                    SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 0xFF);
+                    SDL_RenderClear(gRenderer);
+                    gGameOverTextTexture.render(&gGameOverTextTexture, (SCREEN_WIDTH - gGameOverTextTexture.mWidth) / 2, SCREEN_HEIGHT / 2, gRenderer, NULL, 0.0, NULL, SDL_FLIP_NONE);
+                    // Atualiza a tela
+                    SDL_RenderPresent(gRenderer);
+                    
+                    SDL_Delay(7000);
+                    quit = true;
+                }
 
             }
         }
