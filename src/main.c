@@ -373,9 +373,9 @@ int main (int argc, char **argv)
                     stopPlayingWaka = true;
                 }
 
-                // Desliga o power up após 5 segundos
+                // Desliga o power up após 10 segundos
                 if(gotPowerUp){
-                    if(SDL_GetTicks() - powerUpTimer >= 5000) {
+                    if(SDL_GetTicks() - powerUpTimer >= 10000) {
                         gotPowerUp = false;
                     }
                 }
